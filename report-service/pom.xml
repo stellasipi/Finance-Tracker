@@ -13,4 +13,9 @@
 	<artifactId>report-service</artifactId>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>report-api</module>
+		<module>report-core</module>
+	</modules>
+
 </project>

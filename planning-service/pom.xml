@@ -13,4 +13,9 @@
 	<artifactId>planning-service</artifactId>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>planning-api</module>
+		<module>planning-core</module>
+	</modules>
+
 </project>

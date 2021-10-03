@@ -13,4 +13,9 @@
 	<artifactId>transaction-service</artifactId>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>transaction-api</module>
+		<module>transaction-core</module>
+	</modules>
+
 </project>
