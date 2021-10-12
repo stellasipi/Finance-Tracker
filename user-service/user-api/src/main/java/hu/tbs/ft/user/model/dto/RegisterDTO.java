@@ -12,5 +12,4 @@ public class RegisterDTO {
     private String password;
     private String email;
     private String registrationDate;
-    private List<String> roles=new ArrayList<>();
 }

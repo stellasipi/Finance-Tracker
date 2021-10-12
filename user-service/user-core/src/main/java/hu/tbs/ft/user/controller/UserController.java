@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDTO> registerUser(@RequestBody RegisterDTO userDTO) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody RegisterDTO userDTO) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
