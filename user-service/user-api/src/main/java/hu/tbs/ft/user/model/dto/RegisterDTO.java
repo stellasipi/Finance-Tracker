@@ -4,15 +4,13 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
-public class UserDTO {
-    private UUID id;
+public class RegisterDTO {
     private String name;
     private String username;
+    private String password;
     private String email;
     private String registrationDate;
-    private List<RoleDTO> roles;
-    private List<String> reminders; //TODO ReminderDTO
+    private List<String> roles=new ArrayList<>();
 }
