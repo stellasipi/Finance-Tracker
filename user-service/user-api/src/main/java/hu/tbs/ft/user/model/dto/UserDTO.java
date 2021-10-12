@@ -1,5 +1,6 @@
 package hu.tbs.ft.user.model.dto;
 
+import hu.tbs.ft.planning.ReminderDTO;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -13,5 +14,5 @@ public class UserDTO {
     private String username;
     private String email;
     private List<RoleDTO> roles;
-    private List<String> reminders; //TODO ReminderDTO
+    private List<ReminderDTO> reminders;
 }
