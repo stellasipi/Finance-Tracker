@@ -2,6 +2,7 @@ package hu.tbs.ft.user.model.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,5 +12,5 @@ public class RegisterDTO {
     private String username;
     private String password;
     private String email;
-    private String registrationDate;
+    private LocalDateTime registrationDate;
 }
