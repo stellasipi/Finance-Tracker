@@ -3,7 +3,6 @@ package hu.tbs.ft.planning.controller;
 import hu.tbs.ft.planning.RepetitionDTO;
 import hu.tbs.ft.planning.service.RepetitionService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RepetitionController {
 
-    @Autowired
     private RepetitionService repetitionService;
 
     @GetMapping("/{pocketId}")

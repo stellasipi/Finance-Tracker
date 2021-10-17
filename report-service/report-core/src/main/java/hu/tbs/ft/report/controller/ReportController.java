@@ -3,7 +3,6 @@ package hu.tbs.ft.report.controller;
 import hu.tbs.ft.report.ReportDTO;
 import hu.tbs.ft.report.service.ReportService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReportController {
 
-    @Autowired
     private ReportService reportService;
 
     @GetMapping
@@ -24,7 +22,7 @@ public class ReportController {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
-    @GetMapping("/generate/{id}")
+    @GetMapping("/{id}/generate")
     public ResponseEntity getTransaction(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
