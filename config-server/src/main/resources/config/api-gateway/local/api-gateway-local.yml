@@ -1,0 +1,18 @@
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
+  routes:
+    user:
+      path: /user/**
+      url: http://localhost:8081
+    transaction:
+      path: /transaction/**
+      url: http://localhost:8082
+    report:
+      path: /report/**
+      url: http://localhost:8083
+    pocket:
+      path: /pocket/**
+      url: http://localhost:8084
+    planning:
+      path: /planning/**
+      url: http://localhost:8085

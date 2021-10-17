@@ -47,6 +47,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>hu.tbs.finance-tracker</groupId>
             <artifactId>user-api</artifactId>
             <version>1.0.0</version>

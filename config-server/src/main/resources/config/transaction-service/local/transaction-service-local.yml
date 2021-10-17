@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ft_transaction_db
+    driver-class-name: org.postgresql.Driver
+    username: ftdb_user
+    password: ftdb_user
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      org:
+        hibernate:
+          dialect: PostgreSQLDialect
+
+server:
+  port: 8082

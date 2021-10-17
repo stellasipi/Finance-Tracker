@@ -1,0 +1,10 @@
+# A Bootstrap.yml-ben csak az abszolut szukseges minimumot allitjuk be ahhoz, hogy az alkalmazsunk elere a config servert
+spring:
+  profiles:
+    active: local
+  application:
+    name: user-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
