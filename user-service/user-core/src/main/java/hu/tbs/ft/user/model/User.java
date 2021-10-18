@@ -1,6 +1,8 @@
 package hu.tbs.ft.user.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "\"user\"")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     private UUID id = UUID.randomUUID();
@@ -36,15 +40,6 @@ public class User {
     private List<UUID> roles;
 
     @ElementCollection
-    private List<UUID> reports;
-
-    @ElementCollection
     private List<UUID> reminders;
-
-    @ElementCollection
-    private List<UUID> transactions;
-
-    @ElementCollection
-    private List<UUID> pockets;
 
 }

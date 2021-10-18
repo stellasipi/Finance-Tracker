@@ -4,42 +4,54 @@ package hu.tbs.ft.user.controller;
 import hu.tbs.ft.user.model.dto.RegisterDTO;
 import hu.tbs.ft.user.model.dto.UserDTO;
 import hu.tbs.ft.user.model.dto.UserPasswordDTO;
+import hu.tbs.ft.user.service.UserAlreadyExists;
 import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping//("/user")
 @AllArgsConstructor
-public class UserController {
+public class UserController { // TODO auth után javítani
 
     private UserService userService;
 
-    @GetMapping("/info")
-    public ResponseEntity<UserDTO> getUserInfo() {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserInfo(@PathVariable UUID id) {
+        UserDTO user = userService.getInfo(id);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody RegisterDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    public ResponseEntity<UserDTO> registerUser(@RequestBody RegisterDTO registerDTO, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            UserDTO userDTO = userService.registerUser(registerDTO);
+            UriComponents uriComponents = uriComponentsBuilder.path("/user/{id}").buildAndExpand(userDTO.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(userDTO);
+        } catch (UserAlreadyExists ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<UserDTO> modifyUser(@RequestBody UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
-    @PutMapping("/password")
-    public ResponseEntity<UserPasswordDTO> modifyUser(@RequestBody UserPasswordDTO userDTO) {
+    @PutMapping("/{id}/password")
+    public ResponseEntity modifyPassword(@RequestBody UserPasswordDTO userDTO) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable UUID id) {
+        return ResponseEntity.ok().build();
     }
 
 }
