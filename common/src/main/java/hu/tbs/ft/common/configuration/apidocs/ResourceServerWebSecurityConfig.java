@@ -13,10 +13,10 @@ public class ResourceServerWebSecurityConfig extends WebSecurityConfigurerAdapte
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable()
                 .cors()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .httpBasic().disable();
     }
 
     @Bean

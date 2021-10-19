@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ApiDocsConfiguration.class, ResourceServerWebSecurityConfig.class})
+@Import({ApiDocsConfiguration.class, ResourceServerWebSecurityConfig.class/*, WebConfig.class*/})
 @Slf4j
 public class UserServiceApplication {
     public static void main(String[] args) {

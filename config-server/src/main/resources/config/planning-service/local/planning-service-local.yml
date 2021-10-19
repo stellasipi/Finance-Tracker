@@ -6,7 +6,7 @@ spring:
     password: ftdb_user
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       org:
         hibernate:
@@ -14,4 +14,4 @@ spring:
 
 server:
   port: 8085
-  contextPath: /planning
+  #contextPath: /planning
