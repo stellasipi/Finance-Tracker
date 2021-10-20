@@ -29,15 +29,15 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return userToUserDTO(user.get());
-        }else{
+        } else {
             log.error("Can't find {} user", id);
             return null;
         }
     }
 
-    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO check, roles, reminders
+    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO roles, reminders
         log.info("Register user");
-        if (isNewUserCorrect(registerDTO)) {
+        if (isUserFieldsCorrect(registerDTO)) {
             User user = new User(UUID.randomUUID(),
                     registerDTO.getName(),
                     registerDTO.getUsername(),
@@ -49,40 +49,39 @@ public class UserService {
             log.info("User created {}", user);
             return userToUserDTO(userRepository.save(user));
         } else {
-            log.error("Can't create user {}", registerDTO);
+            log.error("Can't create user");
             throw new UserException("Not unique fields");
         }
     }
 
     public UserDTO modifyUser(UUID id, ModifyUserDTO modifyUserDTO) throws UserException {
         log.info("Modify user");
-        if (isModificationIsCorrect(modifyUserDTO, id)) {
-            User user = userRepository.getById(id);
-
-            user.setName(modifyUserDTO.getName());
-            user.setUsername(modifyUserDTO.getUsername());
-            user.setEmail(modifyUserDTO.getEmail());
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent() && isUserFieldsCorrect(modifyUserDTO)) {
+            user.get().setName(modifyUserDTO.getName());
+            user.get().setUsername(modifyUserDTO.getUsername());
+            user.get().setEmail(modifyUserDTO.getEmail());
 
             log.info("User modified {}", id);
-            return userToUserDTO(userRepository.save(user));
+            return userToUserDTO(userRepository.save(user.get()));
         } else {
-            log.error("Can't modify user {}", id);
-            throw new UserException("Not unique fields");
+            log.error("Can't modify user {} or user is not exists", id);
+            throw new UserException("Not unique fields or user is not exists");
         }
     }
 
     public UserDTO modifyPassword(UUID id, UserPasswordDTO userPasswordDTO) throws UserException {
         log.info("Modify password");
-        if (isPasswordModificationIsCorrect(userPasswordDTO, id)) {
-            User user = userRepository.getById(id);
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent() && isPasswordModificationIsCorrect(userPasswordDTO, id)) {
 
-            user.setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
+            user.get().setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
             log.info("User password modified {}", id);
-            return userToUserDTO(userRepository.save(user));
+            return userToUserDTO(userRepository.save(user.get()));
         } else {
-            log.error("Can't modify password {}", id);
-            throw new UserException("Invalid password");
+            log.error("Can't modify password {} or user is not exists", id);
+            throw new UserException("Invalid password or user is not exists");
         }
     }
 
@@ -101,13 +100,16 @@ public class UserService {
         return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail(), null, null);
     }
 
-    private Boolean isNewUserCorrect(RegisterDTO registerDTO) {
-        //TODO unique check
-        return true;
-    }
 
-    private Boolean isModificationIsCorrect(ModifyUserDTO modifyUserDTO, UUID id) {
-        //TODO unique check
+    private Boolean isUserFieldsCorrect(ModifyUserDTO userDTO) {
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            log.error("{} username is not unique", userDTO.getUsername());
+            return false;
+        }
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            log.error("{} email is not unique", userDTO.getEmail());
+            return false;
+        }
         return true;
     }
 
