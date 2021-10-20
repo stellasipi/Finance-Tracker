@@ -16,3 +16,5 @@ zuul:
     planning:
       path: /planning/**
       url: http://localhost:8085
+  host:
+    socketTimeoutMillis: 600000

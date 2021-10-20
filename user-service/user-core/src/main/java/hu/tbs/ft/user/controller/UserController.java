@@ -8,9 +8,8 @@ import hu.tbs.ft.user.model.dto.UserPasswordDTO;
 import hu.tbs.ft.user.service.UserException;
 import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,8 +18,9 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping
+@RequestMapping/*("/user")*/
 @AllArgsConstructor
+@Slf4j
 public class UserController { // TODO auth után javítani és eltávolítani az id-s részeket
 
     private UserService userService;
@@ -28,56 +28,51 @@ public class UserController { // TODO auth után javítani és eltávolítani az
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserInfo(@PathVariable UUID id) {
         UserDTO user = userService.getInfo(id);
-        return ResponseEntity.ok(user);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO, UriComponentsBuilder uriComponentsBuilder, BindingResult result) {
-        if (result.hasErrors()) {
+    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            UserDTO userDTO = userService.registerUser(registerDTO);
+            UriComponents uriComponents = uriComponentsBuilder.path("/user/{id}").buildAndExpand(userDTO.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(userDTO);
+        } catch (UserException ex) {
             return ResponseEntity.badRequest().build();
-        } else {
-            try {
-                UserDTO userDTO = userService.registerUser(registerDTO);
-                UriComponents uriComponents = uriComponentsBuilder.path("/user/{id}").buildAndExpand(userDTO.getId());
-                return ResponseEntity.created(uriComponents.toUri()).body(userDTO);
-            } catch (UserException ex) {
-                return ResponseEntity.badRequest().build();
-            }
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> modifyUser(@PathVariable UUID id, @Valid @RequestBody ModifyUserDTO modifyUserDTO, BindingResult result) {
-        if (result.hasErrors()) {
+    public ResponseEntity<UserDTO> modifyUser(@PathVariable UUID id, @Valid @RequestBody ModifyUserDTO modifyUserDTO) {
+        try {
+            UserDTO modifiedUser = userService.modifyUser(id, modifyUserDTO);
+            return ResponseEntity.ok(modifiedUser);
+        } catch (UserException ex) {
             return ResponseEntity.badRequest().build();
-        } else {
-            try {
-                UserDTO modifiedUser = userService.modifyUser(id, modifyUserDTO);
-                return ResponseEntity.ok(modifiedUser);
-            } catch (UserException ex) {
-                return ResponseEntity.badRequest().build();
-            }
         }
     }
 
     @PutMapping("/{id}/password")
-    public ResponseEntity modifyPassword(@PathVariable UUID id, @Valid @RequestBody UserPasswordDTO userPasswordDTO, BindingResult result) {
-        if (result.hasErrors()) {
+    public ResponseEntity modifyPassword(@PathVariable UUID id, @Valid @RequestBody UserPasswordDTO userPasswordDTO) {
+        try {
+            UserDTO modifiedUser = userService.modifyPassword(id, userPasswordDTO);
+            return ResponseEntity.ok(modifiedUser);
+        } catch (UserException ex) {
             return ResponseEntity.badRequest().build();
-        } else {
-            try {
-                UserDTO modifiedUser = userService.modifyPassword(id, userPasswordDTO);
-                return ResponseEntity.ok(modifiedUser);
-            } catch (UserException ex) {
-                return ResponseEntity.badRequest().build();
-            }
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok().build();
+        if (userService.deleteUser(id)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

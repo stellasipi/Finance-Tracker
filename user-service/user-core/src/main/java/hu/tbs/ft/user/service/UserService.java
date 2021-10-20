@@ -12,9 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
-
-import static java.util.Optional.ofNullable;
 
 @Service
 @AllArgsConstructor
@@ -27,8 +26,13 @@ public class UserService {
 
     public UserDTO getInfo(UUID id) {
         log.info("Get user info for {}", id);
-        User user = userRepository.getById(id);
-        return userToUserDTO(user);
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return userToUserDTO(user.get());
+        }else{
+            log.error("Can't find {} user", id);
+            return null;
+        }
     }
 
     public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO check, roles, reminders
@@ -82,9 +86,15 @@ public class UserService {
         }
     }
 
-    public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
-        log.info("{} user deleted", id);
+    public Boolean deleteUser(UUID id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            log.info("{} user deleted", id);
+            return true;
+        } else {
+            log.error("Can't find {} user", id);
+            return false;
+        }
     }
 
     private UserDTO userToUserDTO(User user) { //TODO javítani a mapperekkel

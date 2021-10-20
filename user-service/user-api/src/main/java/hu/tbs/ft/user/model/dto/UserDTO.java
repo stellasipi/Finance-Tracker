@@ -4,7 +4,6 @@ import hu.tbs.ft.planning.ReminderDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
