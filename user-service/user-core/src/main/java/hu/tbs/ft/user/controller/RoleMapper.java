@@ -1,6 +1,6 @@
 package hu.tbs.ft.user.controller;
 
-/*import hu.tbs.ft.user.model.Role;
+import hu.tbs.ft.user.model.Role;
 import hu.tbs.ft.user.model.dto.RoleDTO;
 import org.mapstruct.Mapper;
 
@@ -8,4 +8,4 @@ import org.mapstruct.Mapper;
 public interface RoleMapper {
     //UserDTO userToUserDTO(User user);
     RoleDTO roleToRoleDTO(Role role);
-}*/
+}

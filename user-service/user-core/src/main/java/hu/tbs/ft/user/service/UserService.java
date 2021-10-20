@@ -1,5 +1,6 @@
 package hu.tbs.ft.user.service;
 
+import hu.tbs.ft.user.controller.UserMapper;
 import hu.tbs.ft.user.model.User;
 import hu.tbs.ft.user.model.dto.ModifyUserDTO;
 import hu.tbs.ft.user.model.dto.RegisterDTO;
@@ -8,6 +9,7 @@ import hu.tbs.ft.user.model.dto.UserPasswordDTO;
 import hu.tbs.ft.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,13 @@ public class UserService {
 
     private PasswordEncoder passwordEncoder;
 
+    private UserMapper userMapper;
+
     public UserDTO getInfo(UUID id) {
         log.info("Get user info for {}", id);
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            return userToUserDTO(user.get());
+            return userMapper.userToUserDTO(user.get());
         } else {
             log.error("Can't find {} user", id);
             return null;
@@ -43,11 +47,9 @@ public class UserService {
                     registerDTO.getUsername(),
                     passwordEncoder.encode(registerDTO.getPassword()),
                     registerDTO.getEmail(),
-                    LocalDateTime.now(),
-                    null,
-                    null);
+                    LocalDateTime.now());
             log.info("User created {}", user);
-            return userToUserDTO(userRepository.save(user));
+            return userMapper.userToUserDTO(userRepository.save(user));
         } else {
             log.error("Can't create user");
             throw new UserException("Not unique fields");
@@ -63,7 +65,7 @@ public class UserService {
             user.get().setEmail(modifyUserDTO.getEmail());
 
             log.info("User modified {}", id);
-            return userToUserDTO(userRepository.save(user.get()));
+            return userMapper.userToUserDTO(userRepository.save(user.get()));
         } else {
             log.error("Can't modify user {} or user is not exists", id);
             throw new UserException("Not unique fields or user is not exists");
@@ -78,7 +80,7 @@ public class UserService {
             user.get().setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
             log.info("User password modified {}", id);
-            return userToUserDTO(userRepository.save(user.get()));
+            return userMapper.userToUserDTO(userRepository.save(user.get()));
         } else {
             log.error("Can't modify password {} or user is not exists", id);
             throw new UserException("Invalid password or user is not exists");
@@ -96,9 +98,9 @@ public class UserService {
         }
     }
 
-    private UserDTO userToUserDTO(User user) { //TODO javítani a mapperekkel
-        return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail(), null, null);
-    }
+    /*private UserDTO userToUserDTO(User user) {
+        return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+    }*/
 
 
     private Boolean isUserFieldsCorrect(ModifyUserDTO userDTO) {
