@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping/*("/user")*/
+@RequestMapping
 @AllArgsConstructor
 @Slf4j
 public class UserController { // TODO auth után javítani és eltávolítani az id-s részeket

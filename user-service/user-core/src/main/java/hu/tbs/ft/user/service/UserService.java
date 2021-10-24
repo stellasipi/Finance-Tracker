@@ -74,7 +74,7 @@ public class UserService {
     public UserDTO modifyPassword(UUID id, UserPasswordDTO userPasswordDTO) throws UserException {
         log.info("Modify password");
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent() && isPasswordModificationIsCorrect(userPasswordDTO, id)) {
+        if (user.isPresent() && isPasswordModificationIsCorrect(userPasswordDTO, user.get())) {
 
             user.get().setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
@@ -121,8 +121,16 @@ public class UserService {
         return true;
     }
 
-    private Boolean isPasswordModificationIsCorrect(UserPasswordDTO userPasswordDTO, UUID id) {
-        //TODO unique check
+    private Boolean isPasswordModificationIsCorrect(UserPasswordDTO userPasswordDTO, User user) {
+        if (!passwordEncoder.matches(userPasswordDTO.getOldPassword(), user.getPassword())) {
+            log.error("{} user old password is not correct", user.getId());
+            return false;
+        }
+
+        if (passwordEncoder.matches(userPasswordDTO.getNewPassword(), user.getPassword())) {
+            log.error("{} user new password is matches with the new one", user.getId());
+            return false;
+        }
         return true;
     }
 
