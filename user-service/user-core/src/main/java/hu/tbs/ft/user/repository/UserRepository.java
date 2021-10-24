@@ -11,6 +11,12 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     @Override
     Optional<User> findById(UUID uuid);
+
     Optional<User> findByUsername(String username);
+
+    Optional<User> findByUsernameAndIdNot(String username, UUID id);
+
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByEmailAndIdNot(String email, UUID id);
 }

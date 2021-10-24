@@ -9,7 +9,6 @@ import hu.tbs.ft.user.model.dto.UserPasswordDTO;
 import hu.tbs.ft.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class UserService {
 
     public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO roles, reminders
         log.info("Register user");
-        if (isUserFieldsCorrect(registerDTO)) {
+        if (isUserFieldsCorrectOnCreate(registerDTO)) {
             User user = new User(UUID.randomUUID(),
                     registerDTO.getName(),
                     registerDTO.getUsername(),
@@ -59,7 +58,7 @@ public class UserService {
     public UserDTO modifyUser(UUID id, ModifyUserDTO modifyUserDTO) throws UserException {
         log.info("Modify user");
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent() && isUserFieldsCorrect(modifyUserDTO)) {
+        if (user.isPresent() && isUserFieldsCorrectOnUpdate(modifyUserDTO, id)) {
             user.get().setName(modifyUserDTO.getName());
             user.get().setUsername(modifyUserDTO.getUsername());
             user.get().setEmail(modifyUserDTO.getEmail());
@@ -98,17 +97,24 @@ public class UserService {
         }
     }
 
-    /*private UserDTO userToUserDTO(User user) {
-        return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
-    }*/
-
-
-    private Boolean isUserFieldsCorrect(ModifyUserDTO userDTO) {
+    private Boolean isUserFieldsCorrectOnCreate(RegisterDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             log.error("{} username is not unique", userDTO.getUsername());
             return false;
         }
         if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            log.error("{} email is not unique", userDTO.getEmail());
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean isUserFieldsCorrectOnUpdate(ModifyUserDTO userDTO, UUID id) {
+        if (userRepository.findByUsernameAndIdNot(userDTO.getUsername(), id).isPresent()) {
+            log.error("{} username is not unique", userDTO.getUsername());
+            return false;
+        }
+        if (userRepository.findByEmailAndIdNot(userDTO.getEmail(), id).isPresent()) {
             log.error("{} email is not unique", userDTO.getEmail());
             return false;
         }
