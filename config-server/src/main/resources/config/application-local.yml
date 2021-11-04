@@ -1,1 +1,10 @@
-#TODO Auth settings come here
+# Configuration applied to ALL applications using the local-dev profile
+finance-tracker:
+  auth-sever-url: http://localhost:9000/oauth2
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks

@@ -14,3 +14,8 @@ spring:
 
 server:
   port: 8083
+
+finance-tracker:
+  security:
+    client-secret: a2a51da0-20a1-4f47-8227-e48fd8657238
+    client-id: report-service

@@ -14,3 +14,8 @@ spring:
 
 server:
   port: 8081
+
+finance-tracker:
+  security:
+    client-secret: c4319f86-0dbc-4915-b204-e6d4f21279b9
+    client-id: user-service

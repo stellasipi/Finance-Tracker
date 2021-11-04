@@ -14,3 +14,8 @@ spring:
 
 server:
   port: 8084
+
+finance-tracker:
+  security:
+    client-secret: d0560d07-0480-4794-ae6c-c6061e391a53
+    client-id: pocket-service

@@ -13,10 +13,10 @@ public class ResourceServerWebSecurityConfig extends WebSecurityConfigurerAdapte
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
-                .csrf().disable()
-                .httpBasic().disable();
+                .authorizeRequests()
+                .antMatchers("/swagger-resources/**", "/swagger-ui/", "/webjars/springfox-swagger-ui/**", "/v2/api-docs**", "/swagger**").permitAll()
+                .anyRequest().authenticated()
+                .and().oauth2ResourceServer().jwt();
     }
 
     @Bean

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local #dev
+    active: local
   application:
     name: api-gateway
   cloud:
