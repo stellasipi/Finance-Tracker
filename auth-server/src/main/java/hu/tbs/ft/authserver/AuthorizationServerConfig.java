@@ -72,7 +72,7 @@ public class AuthorizationServerConfig {
         RegisteredClient frontendClient = RegisteredClient.withId("08f40fbb-7d81-44a0-8f2c-47a14cf3e719")
                 .clientId("finance-tracker-frontend")
                 .clientSecret("74843dc8-6e01-414b-9231-10381e718203")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("http://localhost:4200/*")
                 .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
@@ -82,42 +82,42 @@ public class AuthorizationServerConfig {
         RegisteredClient apiGateway = RegisteredClient.withId("c5c492e8-d921-4e49-9a6c-14a120350be0")
                 .clientId("api-gateway")
                 .clientSecret("090d6b10-9258-46b5-830f-7b9c4fd07e00")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
         RegisteredClient planningService = RegisteredClient.withId("cb9cebc7-1102-4003-96ca-4b3c69ce0e93")
                 .clientId("planning-service")
                 .clientSecret("1d8fc149-f130-4a4a-bfe9-3f36e11e87cc")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
         RegisteredClient pocketService = RegisteredClient.withId("5090cbcf-e1ad-443b-9e87-94784aa5c21e")
                 .clientId("pocket-service")
                 .clientSecret("d0560d07-0480-4794-ae6c-c6061e391a53")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
         RegisteredClient reportService = RegisteredClient.withId("2b4ea1b9-b4f7-40a3-b064-3c72973b35b1")
                 .clientId("report-service")
                 .clientSecret("a2a51da0-20a1-4f47-8227-e48fd8657238")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
         RegisteredClient transactionService = RegisteredClient.withId("b9333eb6-82ee-4ff5-99e9-8a04f122a39d")
                 .clientId("transaction-service")
                 .clientSecret("ea4723c1-5fd4-4f64-adf6-5bb283f3a52b")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
         RegisteredClient userService = RegisteredClient.withId("ee4812a6-a350-4dce-b592-ea84fcfdca8a")
                 .clientId("user-service")
                 .clientSecret("c4319f86-0dbc-4915-b204-e6d4f21279b9")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build();
 
