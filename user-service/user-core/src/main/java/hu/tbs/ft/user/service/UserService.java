@@ -40,15 +40,8 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDTO getInfo(UUID id) {
-        log.info("Get user info for {}", id);
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return userMapper.userToUserDTO(user.get());
-        } else {
-            log.error("Can't find {} user", id);
-            return null;
-        }
+    public Optional<User> findOne(UUID id) {
+        return userRepository.findById(id);
     }
 
     public UserDTO registerUser(RegisterDTO registerDTO) throws UserException {

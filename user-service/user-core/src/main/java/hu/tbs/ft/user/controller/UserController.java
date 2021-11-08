@@ -1,10 +1,7 @@
 package hu.tbs.ft.user.controller;
 
 
-import hu.tbs.ft.user.model.dto.ModifyUserDTO;
-import hu.tbs.ft.user.model.dto.RegisterDTO;
-import hu.tbs.ft.user.model.dto.UserDTO;
-import hu.tbs.ft.user.model.dto.UserPasswordDTO;
+import hu.tbs.ft.user.model.dto.*;
 import hu.tbs.ft.user.service.UserException;
 import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,19 +18,23 @@ import java.util.UUID;
 @RequestMapping
 @AllArgsConstructor
 @Slf4j
-public class UserController { // TODO auth után javítani és eltávolítani az id-s részeket
+public class UserController implements UserServiceIF {
 
     private UserService userService;
 
+    private UserMapper userMapper;
+
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserInfo(@PathVariable UUID id) {
-        UserDTO user = userService.getInfo(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> findOneUser(@PathVariable UUID id) {
+        return userService.findOne(id)
+                .map(entity -> ResponseEntity.ok(userMapper.userToUserDTO(entity)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/test")
+    public ResponseEntity test(){
+        return ResponseEntity.ok("Working");
+    };
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO, UriComponentsBuilder uriComponentsBuilder) {

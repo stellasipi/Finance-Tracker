@@ -18,6 +18,11 @@ public class PocketController {
 
     private PocketService pocketService;
 
+    @GetMapping("/testFeign")
+    public ResponseEntity testFeign() {
+        return pocketService.testFeign() ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<PocketDTO>> getAllPockets() { //TODO + filterek
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

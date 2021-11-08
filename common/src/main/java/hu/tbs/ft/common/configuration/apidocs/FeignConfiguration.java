@@ -22,7 +22,7 @@ public class FeignConfiguration {
     private String clientSecret;
 
     @Bean
-    public OAuth2FeignRequestInterceptor oauth2schemeRequestInterceptor() {
+    public OAuth2FeignRequestInterceptor oauth2schemeRequestInterceptor() { //kimenő feign hívások oatuh2 hívások lesznek
         return new OAuth2FeignRequestInterceptor(new DefaultOAuth2ClientContext(), oauth2schemeResourceDetails());
     }
 
