@@ -8,6 +8,9 @@ import hu.tbs.ft.user.model.dto.UserDTO;
 import hu.tbs.ft.user.model.dto.UserPasswordDTO;
 import hu.tbs.ft.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 @Slf4j
 public class UserService {
 
@@ -26,6 +29,19 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     private UserMapper userMapper;
+
+    @Value("${finance-tracker.user-service.role.user}")
+    private String roleUser;
+
+    @Value("${finance-tracker.user-service.role.admin}")
+    private String roleAdmin;
+
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
+    }
 
     public UserDTO getInfo(UUID id) {
         log.info("Get user info for {}", id);
@@ -46,7 +62,8 @@ public class UserService {
                     registerDTO.getUsername(),
                     passwordEncoder.encode(registerDTO.getPassword()),
                     registerDTO.getEmail(),
-                    LocalDateTime.now());
+                    LocalDateTime.now(),
+                    roleUser);
             log.info("User created {}", user);
             return userMapper.userToUserDTO(userRepository.save(user));
         } else {

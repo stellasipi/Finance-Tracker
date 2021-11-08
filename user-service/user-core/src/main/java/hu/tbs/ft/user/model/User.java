@@ -36,10 +36,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime registrationDate;
 
-    //@ElementCollection
-    //private List<UUID> roles;
-
-    //@ElementCollection
-    //private List<UUID> reminders;
+    @Column(nullable = false)
+    private String role;
 
 }
