@@ -7,11 +7,9 @@ import hu.tbs.ft.user.model.dto.RegisterDTO;
 import hu.tbs.ft.user.model.dto.UserDTO;
 import hu.tbs.ft.user.model.dto.UserPasswordDTO;
 import hu.tbs.ft.user.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-//@AllArgsConstructor
 @Slf4j
 public class UserService {
 
@@ -54,7 +51,7 @@ public class UserService {
         }
     }
 
-    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO roles, reminders
+    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException {
         log.info("Register user");
         if (isUserFieldsCorrectOnCreate(registerDTO)) {
             User user = new User(UUID.randomUUID(),
