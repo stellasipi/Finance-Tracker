@@ -3,6 +3,7 @@ package hu.tbs.ft.pocket.controller;
 import hu.tbs.ft.pocket.LimitDTO;
 import hu.tbs.ft.pocket.PocketDTO;
 import hu.tbs.ft.pocket.service.PocketService;
+import hu.tbs.ft.user.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ public class PocketController {
 
     private PocketService pocketService;
 
-    @GetMapping("/testFeign")
-    public ResponseEntity testFeign() {
-        return pocketService.testFeign() ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    @GetMapping("/testFeign/{id}")
+    public ResponseEntity<UserDTO> testFeign(@PathVariable UUID id) {
+        return ResponseEntity.ok(pocketService.testFeign(id));
     }
 
     @GetMapping

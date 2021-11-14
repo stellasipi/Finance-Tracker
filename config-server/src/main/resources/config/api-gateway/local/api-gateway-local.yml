@@ -2,7 +2,7 @@ zuul:
   sensitiveHeaders: Cookie,Set-Cookie
   routes:
     user:
-      path: /user/**
+      path: /user-service/**
       url: http://localhost:8081
     transaction:
       path: /transaction/**

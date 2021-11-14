@@ -12,7 +12,4 @@ import java.util.UUID;
 public interface UserServiceIF {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findOneUser(@PathVariable UUID id);
-
-    @GetMapping("/test")
-    public ResponseEntity test();
 }

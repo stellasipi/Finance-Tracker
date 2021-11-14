@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping
+@RequestMapping("/user")
 @AllArgsConstructor
 @Slf4j
 public class UserController implements UserServiceIF {
@@ -30,11 +30,6 @@ public class UserController implements UserServiceIF {
                 .map(entity -> ResponseEntity.ok(userMapper.userToUserDTO(entity)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @GetMapping("/test")
-    public ResponseEntity test(){
-        return ResponseEntity.ok("Working");
-    };
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO, UriComponentsBuilder uriComponentsBuilder) {
