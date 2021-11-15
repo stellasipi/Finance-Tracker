@@ -57,6 +57,11 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>hu.tbs.finance-tracker</groupId>
+            <artifactId>user-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <!-- Runnable services should use the following plugin -->

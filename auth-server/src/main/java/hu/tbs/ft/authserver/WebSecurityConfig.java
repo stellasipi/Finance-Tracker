@@ -13,6 +13,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    /*@Autowired
+    private UserDetailsServiceImpl userDetailsService;*/
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -33,4 +37,9 @@ public class WebSecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
+
+    /*@Bean
+    public UserDetailsService users() {
+        return userDetailsService;
+    }*/
 }
