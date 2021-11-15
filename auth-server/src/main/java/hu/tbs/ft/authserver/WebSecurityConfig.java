@@ -1,21 +1,20 @@
 package hu.tbs.ft.authserver;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
+@EnableFeignClients(basePackages = "hu.tbs.ft")
 public class WebSecurityConfig {
 
-    /*@Autowired
-    private UserDetailsServiceImpl userDetailsService;*/
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -28,15 +27,15 @@ public class WebSecurityConfig {
     }
 
 
-    @Bean
+    /*@Bean
     public UserDetailsService users() {
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user")
                 .password("password")
-                .roles("USER")
+                .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user);
-    }
+    }*/
 
     /*@Bean
     public UserDetailsService users() {

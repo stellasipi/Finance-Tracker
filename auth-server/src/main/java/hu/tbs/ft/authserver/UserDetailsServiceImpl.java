@@ -1,7 +1,7 @@
 package hu.tbs.ft.authserver;
 
-import hu.tbs.ft.user.model.User;
-import hu.tbs.ft.user.repository.UserRepository;
+import hu.tbs.ft.user.model.dto.DbUser;
+import hu.tbs.ft.user.model.dto.UserServiceIF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,13 +14,13 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserServiceIF userServiceIF; //rosszat hív: [http://localhost:8081/user?username=gloria.hunter]
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<DbUser> user = Optional.ofNullable(userServiceIF.findUserByUsername(username).getBody());
         if (!user.isPresent()) {
-            throw new UsernameNotFoundException(s);
+            throw new UsernameNotFoundException(username);
         }
         return new UserDetailsImpl(user.get());
     }

@@ -61,7 +61,7 @@ public class ApiDocsConfiguration {
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
-                .securityReferences(Collections.singletonList(new SecurityReference("spring_oauth", new AuthorizationScope[] {})))
+                .securityReferences(Collections.singletonList(new SecurityReference("spring_oauth", new AuthorizationScope[]{})))
                 .operationSelector(s -> !s.requestMappingPattern().matches(".*/public.*"))
                 .build();
     }

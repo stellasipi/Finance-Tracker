@@ -1,6 +1,6 @@
 package hu.tbs.ft.authserver;
 
-import hu.tbs.ft.user.model.User;
+import hu.tbs.ft.user.model.dto.DbUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +10,9 @@ import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private User user;
+    private DbUser user;
 
-    public UserDetailsImpl(User user) {
+    public UserDetailsImpl(DbUser user) {
         this.user = user;
     }
 
