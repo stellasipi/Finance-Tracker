@@ -59,8 +59,8 @@
         </dependency>
         <dependency>
             <groupId>hu.tbs.finance-tracker</groupId>
-            <artifactId>user-core</artifactId>
-            <version>1.0.0</version>
+            <artifactId>user-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

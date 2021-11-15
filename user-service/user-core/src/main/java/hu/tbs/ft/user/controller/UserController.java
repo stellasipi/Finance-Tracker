@@ -12,6 +12,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +33,12 @@ public class UserController implements UserServiceIF {
         return userService.findOne(id)
                 .map(entity -> ResponseEntity.ok(userMapper.userToUserDTO(entity)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<DbUser> findUserByUsername(@Valid @RequestParam @NotNull @NotBlank @NotEmpty String username) {
+        Optional<DbUser> user = userService.findByUsername(username);
+        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/register")

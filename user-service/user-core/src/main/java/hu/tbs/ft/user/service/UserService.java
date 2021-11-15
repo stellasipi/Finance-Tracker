@@ -2,10 +2,7 @@ package hu.tbs.ft.user.service;
 
 import hu.tbs.ft.user.controller.UserMapper;
 import hu.tbs.ft.user.model.User;
-import hu.tbs.ft.user.model.dto.ModifyUserDTO;
-import hu.tbs.ft.user.model.dto.RegisterDTO;
-import hu.tbs.ft.user.model.dto.UserDTO;
-import hu.tbs.ft.user.model.dto.UserPasswordDTO;
+import hu.tbs.ft.user.model.dto.*;
 import hu.tbs.ft.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,14 @@ public class UserService {
 
     public Optional<User> findOne(UUID id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<DbUser> findByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return Optional.of(userMapper.userToDbUser(user.get()));
+        }
+        return Optional.empty();
     }
 
     public UserDTO registerUser(RegisterDTO registerDTO) throws UserException {
