@@ -13,8 +13,8 @@ public class ResourceServerWebSecurityConfig extends WebSecurityConfigurerAdapte
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests() //a user-es végpontok még mindig nem elérhetőek
-                .antMatchers("/user/?username=**", "/user/register", "/swagger-resources/**", "/swagger-ui/", "/webjars/springfox-swagger-ui/**", "/v2/api-docs**", "/swagger**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/swagger-resources/**", "/swagger-ui/", "/webjars/springfox-swagger-ui/**", "/v2/api-docs**", "/swagger**", "/user-service/**").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2ResourceServer().jwt();
     }
