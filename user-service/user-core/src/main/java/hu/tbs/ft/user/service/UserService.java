@@ -2,13 +2,11 @@ package hu.tbs.ft.user.service;
 
 import hu.tbs.ft.user.controller.UserMapper;
 import hu.tbs.ft.user.model.User;
-import hu.tbs.ft.user.model.dto.ModifyUserDTO;
-import hu.tbs.ft.user.model.dto.RegisterDTO;
-import hu.tbs.ft.user.model.dto.UserDTO;
-import hu.tbs.ft.user.model.dto.UserPasswordDTO;
+import hu.tbs.ft.user.model.dto.*;
 import hu.tbs.ft.user.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class UserService {
 
@@ -27,18 +24,32 @@ public class UserService {
 
     private UserMapper userMapper;
 
-    public UserDTO getInfo(UUID id) {
-        log.info("Get user info for {}", id);
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return userMapper.userToUserDTO(user.get());
-        } else {
-            log.error("Can't find {} user", id);
-            return null;
-        }
+    @Value("${finance-tracker.user-service.role.user}")
+    private String roleUser;
+
+    @Value("${finance-tracker.user-service.role.admin}")
+    private String roleAdmin;
+
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
-    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException { //TODO roles, reminders
+    public Optional<User> findOne(UUID id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<DbUser> findByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return Optional.of(userMapper.userToDbUser(user.get()));
+        }
+        return Optional.empty();
+    }
+
+    public UserDTO registerUser(RegisterDTO registerDTO) throws UserException {
         log.info("Register user");
         if (isUserFieldsCorrectOnCreate(registerDTO)) {
             User user = new User(UUID.randomUUID(),
@@ -46,7 +57,8 @@ public class UserService {
                     registerDTO.getUsername(),
                     passwordEncoder.encode(registerDTO.getPassword()),
                     registerDTO.getEmail(),
-                    LocalDateTime.now());
+                    LocalDateTime.now(),
+                    roleUser);
             log.info("User created {}", user);
             return userMapper.userToUserDTO(userRepository.save(user));
         } else {

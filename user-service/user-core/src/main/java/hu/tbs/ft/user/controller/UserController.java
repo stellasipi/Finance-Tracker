@@ -1,10 +1,7 @@
 package hu.tbs.ft.user.controller;
 
 
-import hu.tbs.ft.user.model.dto.ModifyUserDTO;
-import hu.tbs.ft.user.model.dto.RegisterDTO;
-import hu.tbs.ft.user.model.dto.UserDTO;
-import hu.tbs.ft.user.model.dto.UserPasswordDTO;
+import hu.tbs.ft.user.model.dto.*;
 import hu.tbs.ft.user.service.UserException;
 import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -15,24 +12,33 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping
+@RequestMapping("/user")
 @AllArgsConstructor
 @Slf4j
-public class UserController { // TODO auth után javítani és eltávolítani az id-s részeket
+public class UserController implements UserServiceIF {
 
     private UserService userService;
 
+    private UserMapper userMapper;
+
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserInfo(@PathVariable UUID id) {
-        UserDTO user = userService.getInfo(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> findOneUser(@PathVariable UUID id) {
+        return userService.findOne(id)
+                .map(entity -> ResponseEntity.ok(userMapper.userToUserDTO(entity)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<DbUser> findUserByUsername(@Valid @PathVariable @NotNull @NotBlank @NotEmpty String username) {
+        Optional<DbUser> user = userService.findByUsername(username);
+        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/register")

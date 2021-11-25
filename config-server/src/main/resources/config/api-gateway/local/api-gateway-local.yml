@@ -1,20 +1,23 @@
 zuul:
   sensitiveHeaders: Cookie,Set-Cookie
   routes:
-    user:
-      path: /user/**
+    user-service:
+      path: /user-service/**
       url: http://localhost:8081
-    transaction:
-      path: /transaction/**
+    transaction-service:
+      path: /transaction-service/**
       url: http://localhost:8082
-    report:
-      path: /report/**
+    report-service:
+      path: /report-service/**
       url: http://localhost:8083
-    pocket:
-      path: /pocket/**
+    pocket-service:
+      path: /pocket-service/**
       url: http://localhost:8084
-    planning:
-      path: /planning/**
+    planning-service:
+      path: /planning-service/**
       url: http://localhost:8085
+    oauth:
+      path: /oauth2/**
+      url: http://localhost:9000/oauth2
   host:
     socketTimeoutMillis: 600000
