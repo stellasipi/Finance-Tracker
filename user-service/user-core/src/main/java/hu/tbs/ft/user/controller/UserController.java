@@ -35,8 +35,8 @@ public class UserController implements UserServiceIF {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping
-    public ResponseEntity<DbUser> findUserByUsername(@Valid @RequestParam @NotNull @NotBlank @NotEmpty String username) {
+    @GetMapping("/username/{username}")
+    public ResponseEntity<DbUser> findUserByUsername(@Valid @PathVariable @NotNull @NotBlank @NotEmpty String username) {
         Optional<DbUser> user = userService.findByUsername(username);
         return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
     }

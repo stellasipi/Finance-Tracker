@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserServiceIF userServiceIF; //rosszat hív: [http://localhost:8081/user?username=gloria.hunter]
+    private UserServiceIF userServiceIF;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

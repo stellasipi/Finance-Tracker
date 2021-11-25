@@ -5,6 +5,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -26,19 +28,8 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-
-    /*@Bean
-    public UserDetailsService users() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }*/
-
-    /*@Bean
-    public UserDetailsService users() {
-        return userDetailsService;
-    }*/
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
