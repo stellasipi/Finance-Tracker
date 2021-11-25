@@ -14,9 +14,9 @@ public class ResourceServerWebSecurityConfig extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/swagger-resources/**", "/swagger-ui/", "/webjars/springfox-swagger-ui/**", "/v2/api-docs**", "/swagger**", "/user-service/**").permitAll()
+                .antMatchers("/swagger-resources/**", "/swagger-ui/**", "/webjars/springfox-swagger-ui/**", "/v2/api-docs**", "/swagger**", "/user**", "/user/**", "/error/**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2ResourceServer().jwt();
+                .and().csrf().disable().oauth2ResourceServer().jwt();
     }
 
     @Bean
