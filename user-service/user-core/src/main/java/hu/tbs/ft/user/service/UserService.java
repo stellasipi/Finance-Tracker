@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,11 +19,11 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Value("${finance-tracker.user-service.role.user}")
     private String roleUser;
@@ -59,7 +60,7 @@ public class UserService {
                     registerDTO.getEmail(),
                     LocalDateTime.now(),
                     roleUser);
-            log.info("User created {}", user);
+            log.info("User created with username: {}", user.getUsername());
             return userMapper.userToUserDTO(userRepository.save(user));
         } else {
             log.error("Can't create user");
@@ -67,44 +68,45 @@ public class UserService {
         }
     }
 
-    public UserDTO modifyUser(UUID id, ModifyUserDTO modifyUserDTO) throws UserException {
+    public UserDTO modifyUser(JwtAuthenticationToken authentication, ModifyUserDTO modifyUserDTO) throws UserException {
         log.info("Modify user");
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent() && isUserFieldsCorrectOnUpdate(modifyUserDTO, id)) {
+        Optional<User> user = userRepository.findByUsername(authentication.getName());
+        if (user.isPresent() && isUserFieldsCorrectOnUpdate(modifyUserDTO, user.get().getId())) {
             user.get().setName(modifyUserDTO.getName());
             user.get().setUsername(modifyUserDTO.getUsername());
             user.get().setEmail(modifyUserDTO.getEmail());
 
-            log.info("User modified {}", id);
+            log.info("User modified {}", user.get().getUsername());
             return userMapper.userToUserDTO(userRepository.save(user.get()));
         } else {
-            log.error("Can't modify user {} or user is not exists", id);
+            log.error("Can't modify user {} or user is not exists", authentication.getName());
             throw new UserException("Not unique fields or user is not exists");
         }
     }
 
-    public UserDTO modifyPassword(UUID id, UserPasswordDTO userPasswordDTO) throws UserException {
+    public UserDTO modifyPassword(JwtAuthenticationToken authentication, UserPasswordDTO userPasswordDTO) throws UserException {
         log.info("Modify password");
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userRepository.findByUsername(authentication.getName());
         if (user.isPresent() && isPasswordModificationIsCorrect(userPasswordDTO, user.get())) {
 
             user.get().setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
-            log.info("User password modified {}", id);
+            log.info("User password modified with username:{}", user.get().getUsername());
             return userMapper.userToUserDTO(userRepository.save(user.get()));
         } else {
-            log.error("Can't modify password {} or user is not exists", id);
+            log.error("Can't modify password for {} or user is not exists", authentication.getName());
             throw new UserException("Invalid password or user is not exists");
         }
     }
 
-    public Boolean deleteUser(UUID id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            log.info("{} user deleted", id);
+    public Boolean deleteUser(JwtAuthenticationToken authenticationToken) {
+        Optional<User> user = userRepository.findByUsername(authenticationToken.getName());
+        if (user.isPresent()) {
+            userRepository.deleteById(user.get().getId());
+            log.info("{} user deleted", user.get().getUsername());
             return true;
         } else {
-            log.error("Can't find {} user", id);
+            log.error("Can't find {} user", authenticationToken.getName());
             return false;
         }
     }

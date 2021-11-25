@@ -7,6 +7,7 @@ import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -52,29 +53,29 @@ public class UserController implements UserServiceIF {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> modifyUser(@PathVariable UUID id, @Valid @RequestBody ModifyUserDTO modifyUserDTO) {
+    @PutMapping
+    public ResponseEntity<UserDTO> modifyUser(JwtAuthenticationToken authentication, @Valid @RequestBody ModifyUserDTO modifyUserDTO) {
         try {
-            UserDTO modifiedUser = userService.modifyUser(id, modifyUserDTO);
+            UserDTO modifiedUser = userService.modifyUser(authentication, modifyUserDTO);
             return ResponseEntity.ok(modifiedUser);
         } catch (UserException ex) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @PutMapping("/{id}/password")
-    public ResponseEntity modifyPassword(@PathVariable UUID id, @Valid @RequestBody UserPasswordDTO userPasswordDTO) {
+    @PutMapping("/password")
+    public ResponseEntity modifyPassword(JwtAuthenticationToken authentication, @Valid @RequestBody UserPasswordDTO userPasswordDTO) {
         try {
-            UserDTO modifiedUser = userService.modifyPassword(id, userPasswordDTO);
+            UserDTO modifiedUser = userService.modifyPassword(authentication, userPasswordDTO);
             return ResponseEntity.ok(modifiedUser);
         } catch (UserException ex) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable UUID id) {
-        if (userService.deleteUser(id)) {
+    @DeleteMapping
+    public ResponseEntity deleteUser(JwtAuthenticationToken authentication) {
+        if (userService.deleteUser(authentication)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
