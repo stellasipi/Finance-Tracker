@@ -31,6 +31,12 @@ import java.util.List;
 @Configuration
 public class AuthorizationServerConfig {
 
+    private static RequestMatcher tokenEndpointMatcher() {
+        return new AntPathRequestMatcher(
+                OAuth2TokenEndpointFilter.DEFAULT_TOKEN_ENDPOINT_URI,
+                HttpMethod.POST.name());
+    }
+
     @Bean
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
@@ -51,12 +57,6 @@ public class AuthorizationServerConfig {
                 .apply(authorizationServerConfigurer);
 
         return http.build();
-    }
-
-    private static RequestMatcher tokenEndpointMatcher() {
-        return new AntPathRequestMatcher(
-                OAuth2TokenEndpointFilter.DEFAULT_TOKEN_ENDPOINT_URI,
-                HttpMethod.POST.name());
     }
 
     @Bean

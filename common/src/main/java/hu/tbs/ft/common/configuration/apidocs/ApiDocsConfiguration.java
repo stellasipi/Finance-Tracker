@@ -22,11 +22,10 @@ import java.util.Collections;
 @Configuration
 public class ApiDocsConfiguration {
 
-    @Value("${finance-tracker.auth-sever-url}")
-    private String authServerUrl;
-
     private static final String CLIENT_ID = "finance-tracker-frontend";
     private static final String CLIENT_SECRET = "74843dc8-6e01-414b-9231-10381e718203";
+    @Value("${finance-tracker.auth-sever-url}")
+    private String authServerUrl;
 
     @Bean
     public Docket api() {

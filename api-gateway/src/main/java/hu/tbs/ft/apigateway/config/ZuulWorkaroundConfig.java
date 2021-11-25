@@ -17,53 +17,23 @@ import java.lang.reflect.Method;
 @Configuration
 public class ZuulWorkaroundConfig {
 
-    /** The path returned by ErrorContoller.getErrorPath() with Spring Boot < 2.5 (and no longer available on Spring Boot >= 2.5). */
+    /**
+     * The path returned by ErrorContoller.getErrorPath() with Spring Boot < 2.5 (and no longer available on Spring Boot >= 2.5).
+     */
     private static final String ERROR_PATH = "/error";
 
     /**
      * Constructs a new bean post-processor for Zuul.
      *
-     * @param routeLocator
-     *            the route locator.
-     * @param zuulController
-     *            the Zuul controller.
-     * @param errorController
-     *            the error controller.
+     * @param routeLocator    the route locator.
+     * @param zuulController  the Zuul controller.
+     * @param errorController the error controller.
      * @return the new bean post-processor.
      */
     @Bean
     public ZuulPostProcessor zuulPostProcessor(@Autowired RouteLocator routeLocator, @Autowired ZuulController zuulController,
                                                @Autowired(required = false) ErrorController errorController) {
         return new ZuulPostProcessor(routeLocator, zuulController, errorController);
-    }
-
-    private static final class ZuulPostProcessor implements BeanPostProcessor {
-
-        private final RouteLocator routeLocator;
-
-        private final ZuulController zuulController;
-
-        private final boolean hasErrorController;
-
-        ZuulPostProcessor(RouteLocator routeLocator, ZuulController zuulController, ErrorController errorController) {
-            this.routeLocator = routeLocator;
-            this.zuulController = zuulController;
-            this.hasErrorController = (errorController != null);
-        }
-
-        @Override
-        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (hasErrorController && (bean instanceof ZuulHandlerMapping)) {
-                Enhancer enhancer = new Enhancer();
-                enhancer.setSuperclass(ZuulHandlerMapping.class);
-                enhancer.setCallbackFilter(LookupHandlerCallbackFilter.INSTANCE); // only for lookupHandler
-                enhancer.setCallbacks(new Callback[] { LookupHandlerMethodInterceptor.INSTANCE, NoOp.INSTANCE });
-                Constructor<?> ctor = ZuulHandlerMapping.class.getConstructors()[0];
-                return enhancer.create(ctor.getParameterTypes(), new Object[] { routeLocator, zuulController });
-            }
-            return bean;
-        }
-
     }
 
     private static enum LookupHandlerCallbackFilter implements CallbackFilter {
@@ -92,6 +62,35 @@ public class ZuulWorkaroundConfig {
                 return null;
             }
             return methodProxy.invokeSuper(target, args);
+        }
+
+    }
+
+    private static final class ZuulPostProcessor implements BeanPostProcessor {
+
+        private final RouteLocator routeLocator;
+
+        private final ZuulController zuulController;
+
+        private final boolean hasErrorController;
+
+        ZuulPostProcessor(RouteLocator routeLocator, ZuulController zuulController, ErrorController errorController) {
+            this.routeLocator = routeLocator;
+            this.zuulController = zuulController;
+            this.hasErrorController = (errorController != null);
+        }
+
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            if (hasErrorController && (bean instanceof ZuulHandlerMapping)) {
+                Enhancer enhancer = new Enhancer();
+                enhancer.setSuperclass(ZuulHandlerMapping.class);
+                enhancer.setCallbackFilter(LookupHandlerCallbackFilter.INSTANCE); // only for lookupHandler
+                enhancer.setCallbacks(new Callback[]{LookupHandlerMethodInterceptor.INSTANCE, NoOp.INSTANCE});
+                Constructor<?> ctor = ZuulHandlerMapping.class.getConstructors()[0];
+                return enhancer.create(ctor.getParameterTypes(), new Object[]{routeLocator, zuulController});
+            }
+            return bean;
         }
 
     }
