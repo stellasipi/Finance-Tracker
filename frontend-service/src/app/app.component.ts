@@ -1,30 +1,27 @@
-import {Component} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewChecked {
   title: string = 'frontend-service';
+  _loggedIn: boolean = false;
 
-  constructor() {
-    this.configureOauth2();
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef) {
   }
 
-  configureOauth2() {
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
   }
 
-  login(): void {
-    console.log("login button");
+  setLoggedIn(value: boolean) {
+    this._loggedIn = value;
   }
 
-  logout(): void {
+  isLoggedIn(): boolean {
+    return this._loggedIn;
   }
 
-  get token() {
-    //let claims: any = this.oauthService.getIdentityClaims();
-    let claims: any = null;
-    return claims ? claims : null;
-  }
 }

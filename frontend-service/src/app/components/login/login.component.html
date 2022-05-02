@@ -1,2 +1,2 @@
-<div>LOGIN works</div>
-
+<button type="button" class="btn btn-outline-secondary" (click)="login()" *ngIf="!loggedIn">Login</button>
+<button type="button" class="btn btn-outline-secondary" (click)="logout()" *ngIf="loggedIn">Logout</button>

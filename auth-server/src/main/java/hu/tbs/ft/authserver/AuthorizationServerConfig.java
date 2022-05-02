@@ -52,7 +52,7 @@ public class AuthorizationServerConfig {
                     ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) authorizeRequests.anyRequest()).authenticated();
                 })
                 .csrf((csrf) -> {
-                    csrf.ignoringRequestMatchers(new RequestMatcher[]{tokenEndpointMatcher()});
+                    csrf.ignoringRequestMatchers(tokenEndpointMatcher());
                 })
                 .apply(authorizationServerConfigurer);
 
@@ -72,10 +72,10 @@ public class AuthorizationServerConfig {
         RegisteredClient frontendClient = RegisteredClient.withId("08f40fbb-7d81-44a0-8f2c-47a14cf3e719")
                 .clientId("finance-tracker-frontend")
                 .clientSecret("74843dc8-6e01-414b-9231-10381e718203")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("http://localhost:4200/*")
-                .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+                .redirectUri("http://127.0.0.1:4200")
+                .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
                 .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
                 .build();
 
