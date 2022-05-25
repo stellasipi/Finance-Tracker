@@ -21,7 +21,7 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
 
     public List<TransactionDTO> findAllByPocketId(UUID pocketId) {
-        return transactionRepository.findByPocketId(pocketId).stream().map(transaction -> transactionMapper.transactionToTransactionDTO(transaction)).collect(Collectors.toList());
+        return transactionRepository.findByPocketId(pocketId).stream().map(transactionMapper::transactionToTransactionDTO).collect(Collectors.toList());
     }
 
 }

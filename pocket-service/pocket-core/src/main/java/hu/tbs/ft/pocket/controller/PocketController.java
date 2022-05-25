@@ -25,8 +25,8 @@ public class PocketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PocketDTO>> getAllPockets() { //TODO + filterek
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    public ResponseEntity<List<PocketDTO>> getAllPocketsForUser(@RequestParam UUID userId) { //TODO + filterek
+        return ResponseEntity.ok(pocketService.getAllPocketsForUser(userId));
     }
 
     @GetMapping("/{id}")
