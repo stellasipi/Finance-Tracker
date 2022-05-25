@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../model/User";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-register',
@@ -13,9 +14,7 @@ export class RegisterComponent implements OnInit {
   email: string = '';
   password: string = '';
 
-  //createdUser: User;
-
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -29,10 +28,24 @@ export class RegisterComponent implements OnInit {
       password: this.password
     };
 
-    this.userService.registerUser(newUser).subscribe((user) => {
-      console.dir(user);
-    });
+    this.userService.registerUser(newUser).subscribe(
+      data => {
+        this.snackBar.open('Registration succeeded', '', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-primary']
+        });
+        this.resetRegisterForm();
+      },
+      error => {
+        this.snackBar.open('Registration failed', '', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn']
+        });
+      }
+    );
+  }
 
+  resetRegisterForm() {
     this.name = '';
     this.username = '';
     this.email = '';
