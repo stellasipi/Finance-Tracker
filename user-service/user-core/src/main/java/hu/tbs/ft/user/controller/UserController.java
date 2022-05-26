@@ -53,6 +53,12 @@ public class UserController implements UserServiceIF {
         }
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<UserDTO> getLoggedInUser(JwtAuthenticationToken authentication) {
+        Optional<UserDTO> user = userService.getLoggedInUser(authentication);
+        return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.notFound().build();
+    }
+
     @PutMapping
     public ResponseEntity<UserDTO> modifyUser(JwtAuthenticationToken authentication, @Valid @RequestBody ModifyUserDTO modifyUserDTO) {
         try {

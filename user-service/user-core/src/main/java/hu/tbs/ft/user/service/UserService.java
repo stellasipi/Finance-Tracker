@@ -44,10 +44,12 @@ public class UserService {
 
     public Optional<DbUser> findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            return Optional.of(userMapper.userToDbUser(user.get()));
-        }
-        return Optional.empty();
+        return user.map(userMapper::userToDbUser);
+    }
+
+    public Optional<UserDTO> getLoggedInUser(JwtAuthenticationToken authentication) {
+        Optional<User> user = userRepository.findByUsername(authentication.getName());
+        return user.map(userMapper::userToUserDTO);
     }
 
     public UserDTO registerUser(RegisterDTO registerDTO) throws UserException {

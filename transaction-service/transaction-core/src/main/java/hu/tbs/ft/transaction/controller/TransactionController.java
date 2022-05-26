@@ -18,8 +18,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<TransactionDTO>> getAllTransactions() { //TODO + filterek
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId) { //TODO + filterek
+        return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId));
     }
 
     @GetMapping("/{id}")

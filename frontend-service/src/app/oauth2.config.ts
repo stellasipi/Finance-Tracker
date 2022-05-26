@@ -1,4 +1,5 @@
 import {AuthConfig} from 'angular-oauth2-oidc';
+import {fetchUrl, userServiceUrl} from "./constans";
 
 export const authCodeFlowConfig: AuthConfig = {
   loginUrl: 'http://127.0.0.1:9000/oauth2/authorize',
@@ -9,6 +10,7 @@ export const authCodeFlowConfig: AuthConfig = {
   requestAccessToken: true,
   oidc: false,
   scope: '',
+  userinfoEndpoint: userServiceUrl+'/user/info',
   requireHttps: false,
   clearHashAfterLogin: false,
   showDebugInformation: true

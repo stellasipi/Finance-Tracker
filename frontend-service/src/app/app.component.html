@@ -1,7 +1,7 @@
 <div class="container overflow-hidden">
   <div class="row gx-5">
-    <app-login class="m-3 col-sm" (loggedInEvent)="setLoggedIn($event)"></app-login>
-    <app-register class="m-3 col-sm" *ngIf="!isLoggedIn()"></app-register>
+    <app-login class="m-3 col-sm"  ></app-login>
+    <app-register class="m-3 col-sm" *ngIf="!loggedIn"></app-register>
   </div>
 </div>
-<router-outlet *ngIf="isLoggedIn()"></router-outlet>
+<router-outlet *ngIf="loggedIn"></router-outlet>
