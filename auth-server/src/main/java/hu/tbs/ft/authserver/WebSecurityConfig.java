@@ -24,6 +24,10 @@ public class WebSecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
                 )
+                .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID") // TODO not working correctly
+                .and()
                 .formLogin(withDefaults());
         return http.build();
     }

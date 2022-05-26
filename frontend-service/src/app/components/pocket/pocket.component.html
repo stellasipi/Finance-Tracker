@@ -1,0 +1,14 @@
+<div class="container overflow-hidden">
+  <h1>My pockets</h1>
+  <div class="row" *ngFor="let pocket of pockets">
+    <div class="col-3">
+      <button class="btn btn-outline-secondary" (click)="click(pocket)">
+        <p>{{pocket.name}}</p>
+        <p>{{pocket.currency}}</p>
+      </button>
+    </div>
+  </div>
+</div>
+<app-transaction [pocket]="selectedPocket"></app-transaction>
+
+

@@ -1,27 +1,23 @@
-import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {OAuthService} from "angular-oauth2-oidc";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewChecked {
+export class AppComponent implements OnInit {
   title: string = 'frontend-service';
-  _loggedIn: boolean = false;
 
-  constructor(private readonly changeDetectorRef: ChangeDetectorRef) {
+  constructor(private oauthService: OAuthService) {
   }
 
-  ngAfterViewChecked(): void {
-    this.changeDetectorRef.detectChanges();
+  ngOnInit() {
+
   }
 
-  setLoggedIn(value: boolean) {
-    this._loggedIn = value;
-  }
-
-  isLoggedIn(): boolean {
-    return this._loggedIn;
+  get loggedIn() {
+    return this.oauthService.hasValidAccessToken();
   }
 
 }

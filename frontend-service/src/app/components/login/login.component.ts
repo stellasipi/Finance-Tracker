@@ -1,6 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OAuthService} from "angular-oauth2-oidc";
 import {authCodeFlowConfig} from "../../oauth2.config";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-login',
@@ -9,9 +10,7 @@ import {authCodeFlowConfig} from "../../oauth2.config";
 })
 export class LoginComponent implements OnInit {
 
-  @Output() loggedInEvent = new EventEmitter<boolean>();
-
-  constructor(public oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService, private cookieService: CookieService) {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tryLogin();
   }
@@ -20,17 +19,15 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    console.log("login button clicked");
     this.oauthService.initCodeFlow();
   }
 
   logout(): void {
-    this.oauthService.logOut();
+    this.oauthService.logOut(true);
+    this.cookieService.delete('JSESSIONID'); // TODO fix it
   }
 
   get loggedIn() {
-    let accessToken: any = this.oauthService.getAccessToken();
-    this.loggedInEvent.emit(!!accessToken);
-    return accessToken ? accessToken : null;
+    return this.oauthService.hasValidAccessToken();
   }
 }
