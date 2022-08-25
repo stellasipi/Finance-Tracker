@@ -26,7 +26,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 public class AuthorizationServerConfig {
@@ -72,10 +75,11 @@ public class AuthorizationServerConfig {
         RegisteredClient frontendClient = RegisteredClient.withId("08f40fbb-7d81-44a0-8f2c-47a14cf3e719")
                 .clientId("finance-tracker-frontend")
                 .clientSecret("74843dc8-6e01-414b-9231-10381e718203")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC) // postman and swagger
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE) // angular
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("http://127.0.0.1:4200")
-                .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
+                .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
                 .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
                 .build();
 
