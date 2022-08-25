@@ -4,6 +4,7 @@ import hu.tbs.ft.user.controller.UserMapper;
 import hu.tbs.ft.user.model.User;
 import hu.tbs.ft.user.model.dto.*;
 import hu.tbs.ft.user.repository.UserRepository;
+import hu.tbs.ft.user.util.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

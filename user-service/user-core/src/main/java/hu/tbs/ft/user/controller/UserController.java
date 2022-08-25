@@ -2,7 +2,7 @@ package hu.tbs.ft.user.controller;
 
 
 import hu.tbs.ft.user.model.dto.*;
-import hu.tbs.ft.user.service.UserException;
+import hu.tbs.ft.user.util.UserException;
 import hu.tbs.ft.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
