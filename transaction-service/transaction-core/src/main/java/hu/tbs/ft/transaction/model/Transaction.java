@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -40,5 +40,16 @@ public class Transaction {
     private String description;
 
     @Column(nullable = false)
-    private Date createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @PrePersist
+    private void setFields() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+
+        if (this.createDate == null) {
+            this.createDate = LocalDateTime.now();
+        }
+    }
 }
