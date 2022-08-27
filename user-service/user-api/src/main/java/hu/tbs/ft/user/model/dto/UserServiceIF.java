@@ -11,8 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@FeignClient(name = "user-service",
-        url = "${services.user-service-url:localhost:8081}/user")
+@FeignClient(name = "user-service", url = "${services.user-service-url:localhost:8081}/user")
 public interface UserServiceIF {
     @GetMapping("/{id}")
     ResponseEntity<UserDTO> findOneUser(@PathVariable UUID id);
