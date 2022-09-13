@@ -1,5 +1,6 @@
 package hu.tbs.ft.transaction.controller;
 
+import hu.tbs.ft.transaction.ModifyTransactionDTO;
 import hu.tbs.ft.transaction.TransactionDTO;
 import hu.tbs.ft.transaction.service.TransactionService;
 import hu.tbs.ft.transaction.util.TransactionException;
@@ -46,8 +47,13 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionDTO> modifyTransaction(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    public ResponseEntity<TransactionDTO> modifyTransaction(@PathVariable UUID transactionId, @RequestBody ModifyTransactionDTO dto) {
+        try {
+            TransactionDTO modifiedTransaction = transactionService.modifyTransaction(transactionId, dto);
+            return ResponseEntity.ok(modifiedTransaction);
+        } catch (TransactionException ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/{id}")

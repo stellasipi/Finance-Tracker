@@ -30,6 +30,7 @@ public class UserController implements UserServiceIF {
     private UserMapper userMapper;
 
     @GetMapping("/{id}")
+    @Override
     public ResponseEntity<UserDTO> findOneUser(@PathVariable UUID id) {
         return userService.findOne(id)
                 .map(entity -> ResponseEntity.ok(userMapper.userToUserDTO(entity)))
