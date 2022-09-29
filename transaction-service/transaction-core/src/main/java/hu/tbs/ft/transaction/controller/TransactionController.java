@@ -25,7 +25,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId) { //TODO + filterek
+    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId) {
         return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId));
     }
 
@@ -46,8 +46,8 @@ public class TransactionController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TransactionDTO> modifyTransaction(@PathVariable UUID transactionId, @RequestBody ModifyTransactionDTO dto) {
+    @PutMapping
+    public ResponseEntity<TransactionDTO> modifyTransaction(@RequestParam UUID transactionId, @RequestBody ModifyTransactionDTO dto) {
         try {
             TransactionDTO modifiedTransaction = transactionService.modifyTransaction(transactionId, dto);
             return ResponseEntity.ok(modifiedTransaction);

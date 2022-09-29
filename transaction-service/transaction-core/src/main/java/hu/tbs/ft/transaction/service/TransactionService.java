@@ -71,21 +71,17 @@ public class TransactionService {
             throw new TransactionException("Transaction is not exists");
         }
         Transaction transaction = originalTransaction.get();
-        if (isTransactionsFieldsCorrectOnUpdate(dto)) {
-            transaction.setAmount(dto.getAmount().equals(transaction.getAmount().doubleValue()) ? transaction.getAmount() : BigDecimal.valueOf(dto.getAmount()));
-            transaction.setDescription(dto.getDescription().equals(transaction.getDescription()) ? transaction.getDescription() : dto.getDescription());
-            transaction.setName(dto.getName().equals(transaction.getName()) ? transaction.getName() : dto.getName());
-            transaction.setPaymentType(PaymentType.valueOf(dto.getPaymentType()).equals(transaction.getPaymentType()) ? transaction.getPaymentType() : PaymentType.valueOf(dto.getPaymentType()));
-            transaction.setPocketId(dto.getPocketId().equals(transaction.getPocketId()) ? transaction.getPocketId() : dto.getPocketId());
-            transaction.setProceedType(ProceedType.valueOf(dto.getProceedType()).equals(transaction.getProceedType()) ? transaction.getProceedType() : ProceedType.valueOf(dto.getProceedType()));
-            transactionRepository.save(transaction);
-            log.debug("Transaction ({}) have been modified", transaction.getId());
-        }
-        return transactionMapper.transactionToTransactionDTO(transaction);
-    }
 
-    private boolean isTransactionsFieldsCorrectOnUpdate(ModifyTransactionDTO transaction) {
-        return transaction.getDescription() != null && transaction.getName() != null && transaction.getPocketId() != null;
+        transaction.setAmount(dto.getAmount().equals(transaction.getAmount().doubleValue()) ? transaction.getAmount() : BigDecimal.valueOf(dto.getAmount()));
+        transaction.setDescription(dto.getDescription().equals(transaction.getDescription()) ? transaction.getDescription() : dto.getDescription());
+        transaction.setName(dto.getName().equals(transaction.getName()) ? transaction.getName() : dto.getName());
+        transaction.setPaymentType(PaymentType.valueOf(dto.getPaymentType()).equals(transaction.getPaymentType()) ? transaction.getPaymentType() : PaymentType.valueOf(dto.getPaymentType()));
+        transaction.setPocketId(dto.getPocketId().equals(transaction.getPocketId()) ? transaction.getPocketId() : dto.getPocketId());
+        transaction.setProceedType(ProceedType.valueOf(dto.getProceedType()).equals(transaction.getProceedType()) ? transaction.getProceedType() : ProceedType.valueOf(dto.getProceedType()));
+        transactionRepository.save(transaction);
+        log.debug("Transaction ({}) have been modified", transaction.getId());
+
+        return transactionMapper.transactionToTransactionDTO(transaction);
     }
 
 }
