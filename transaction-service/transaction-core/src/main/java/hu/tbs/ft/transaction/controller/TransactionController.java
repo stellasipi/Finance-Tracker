@@ -6,8 +6,8 @@ import hu.tbs.ft.transaction.service.TransactionService;
 import hu.tbs.ft.transaction.util.TransactionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,16 +25,16 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId) {
-        return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId));
+    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId, JwtAuthenticationToken principal) {
+        return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId, principal.getName()));
     }
 
     @GetMapping
-    public ResponseEntity<TransactionDTO> getTransaction(@RequestParam UUID id) {
+    public ResponseEntity<TransactionDTO> getTransaction(@RequestParam UUID id, JwtAuthenticationToken principal) {
         try {
-            TransactionDTO transaction = transactionService.getTransactionById(id);
+            TransactionDTO transaction = transactionService.getTransactionById(id, principal.getName());
             return ResponseEntity.ok(transaction);
-        }catch (TransactionException ex){
+        } catch (TransactionException ex) {
             log.debug(ex.getMessage());
             return ResponseEntity.badRequest().build();
         }
@@ -53,18 +53,23 @@ public class TransactionController {
     }
 
     @PutMapping
-    public ResponseEntity<TransactionDTO> modifyTransaction(@RequestParam UUID transactionId, @RequestBody ModifyTransactionDTO dto) {
+    public ResponseEntity<TransactionDTO> modifyTransaction(@RequestParam UUID transactionId, @RequestBody ModifyTransactionDTO dto, JwtAuthenticationToken principal) {
         try {
-            TransactionDTO modifiedTransaction = transactionService.modifyTransaction(transactionId, dto);
+            TransactionDTO modifiedTransaction = transactionService.modifyTransaction(transactionId, dto, principal.getName());
             return ResponseEntity.ok(modifiedTransaction);
         } catch (TransactionException ex) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteTransaction(@PathVariable UUID id) {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteTransaction(@RequestParam UUID id, JwtAuthenticationToken principal) {
+        try {
+            transactionService.deleteTransaction(id, principal.getName());
+            return ResponseEntity.ok().build();
+        } catch (TransactionException ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

@@ -35,18 +35,27 @@ public class TransactionService {
 
     private PocketServiceIF pocketServiceIF;
 
-    public List<TransactionDTO> findAllByPocketId(UUID pocketId) {
+    public List<TransactionDTO> findAllByPocketId(UUID pocketId, String username) {
         log.debug("Get all transaction by pocket id {}", pocketId);
-        return transactionRepository.findByPocketId(pocketId).stream().map(transactionMapper::transactionToTransactionDTO).collect(Collectors.toList());
+        UserDTO user = userServiceIF.findUserByUsername(username).getBody();
+        return transactionRepository.findByPocketIdAndUserId(pocketId, user.getId()).stream().map(transactionMapper::transactionToTransactionDTO).collect(Collectors.toList());
     }
 
-    public TransactionDTO getTransactionById(UUID id) throws TransactionException {
+    public TransactionDTO getTransactionById(UUID id, String username) throws TransactionException {
         Optional<Transaction> transaction = transactionRepository.findById(id);
-        if(transaction.isPresent()){
-            return transactionMapper.transactionToTransactionDTO(transaction.get());
-        }else {
-            throw new TransactionException("Transaction does not extits");
+        UserDTO user = userServiceIF.findUserByUsername(username).getBody();
+
+        if (transaction.isEmpty()) {
+            log.debug("Transaction does not exists");
+            throw new TransactionException("Transaction does not exists");
         }
+        if (!transaction.get().getUserId().equals(user.getId())) {
+            log.debug("The user is not the owner of the transaction");
+            throw new TransactionException("The user is not the owner of the transaction");
+        }
+
+        return transactionMapper.transactionToTransactionDTO(transaction.get());
+
     }
 
     public TransactionDTO createTransaction(TransactionDTO dto) throws TransactionException {
@@ -70,17 +79,22 @@ public class TransactionService {
         return transactionMapper.transactionToTransactionDTO(transaction);
     }
 
-    public TransactionDTO modifyTransaction(UUID id, ModifyTransactionDTO dto) throws TransactionException {
+    public TransactionDTO modifyTransaction(UUID id, ModifyTransactionDTO dto, String username) throws TransactionException {
         log.debug("Modify transaction");
+        UserDTO user = userServiceIF.findUserByUsername(username).getBody();
         Optional<Transaction> originalTransaction = transactionRepository.findById(id);
         if (originalTransaction.isEmpty()) {
             log.debug("Cannot find transaction with id: {}", id);
             throw new TransactionException("Transaction is not exists");
         }
+        if (!originalTransaction.get().getUserId().equals(user.getId())) {
+            log.debug("The user is not the owner of the transaction");
+            throw new TransactionException("The user is not the owner of the transaction");
+        }
         Transaction transaction = originalTransaction.get();
 
         transaction.setAmount(dto.getAmount().equals(transaction.getAmount().doubleValue()) ? transaction.getAmount() : BigDecimal.valueOf(dto.getAmount()));
-        transaction.setDescription(dto.getDescription().equals(transaction.getDescription()) ? transaction.getDescription() : dto.getDescription());
+        transaction.setDescription(dto.getDescription());
         transaction.setName(dto.getName().equals(transaction.getName()) ? transaction.getName() : dto.getName());
         transaction.setPaymentType(PaymentType.valueOf(dto.getPaymentType()).equals(transaction.getPaymentType()) ? transaction.getPaymentType() : PaymentType.valueOf(dto.getPaymentType()));
         transaction.setPocketId(dto.getPocketId().equals(transaction.getPocketId()) ? transaction.getPocketId() : dto.getPocketId());
@@ -89,6 +103,21 @@ public class TransactionService {
         log.debug("Transaction ({}) have been modified", transaction.getId());
 
         return transactionMapper.transactionToTransactionDTO(transaction);
+    }
+
+    public void deleteTransaction(UUID id, String username) throws TransactionException {
+        UserDTO user = userServiceIF.findUserByUsername(username).getBody();
+        Optional<Transaction> transaction = transactionRepository.findById(id);
+        if (transaction.isEmpty()) {
+            log.debug("Transaction is not existing");
+            throw new TransactionException("Transaction is not existing");
+        }
+        if (!transaction.get().getUserId().equals(user.getId())) {
+            log.debug("The user is not the owner of the transaction");
+            throw new TransactionException("The user is not the owner of the transaction");
+        }
+        transactionRepository.deleteById(transaction.get().getId());
+        log.debug("Transaction has been deleted");
     }
 
 }
