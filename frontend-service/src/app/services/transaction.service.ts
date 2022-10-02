@@ -24,6 +24,6 @@ export class TransactionService {
   }
 
   getAllTransactionsForPocket(pocketId: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(transactionServiceUrl + this.path + '?pocketId=' + pocketId, this.authorizationHeader);
+    return this.http.get<Transaction[]>(transactionServiceUrl + this.path + '/all?pocketId=' + pocketId, this.authorizationHeader);
   }
 }

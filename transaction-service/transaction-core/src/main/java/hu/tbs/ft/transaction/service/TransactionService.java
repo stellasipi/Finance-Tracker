@@ -40,6 +40,15 @@ public class TransactionService {
         return transactionRepository.findByPocketId(pocketId).stream().map(transactionMapper::transactionToTransactionDTO).collect(Collectors.toList());
     }
 
+    public TransactionDTO getTransactionById(UUID id) throws TransactionException {
+        Optional<Transaction> transaction = transactionRepository.findById(id);
+        if(transaction.isPresent()){
+            return transactionMapper.transactionToTransactionDTO(transaction.get());
+        }else {
+            throw new TransactionException("Transaction does not extits");
+        }
+    }
+
     public TransactionDTO createTransaction(TransactionDTO dto) throws TransactionException {
         log.debug("Create new transaction");
         UserDTO user = userServiceIF.findOneUser(dto.getUserId()).getBody();
@@ -47,8 +56,6 @@ public class TransactionService {
             log.debug("Cannot find user with id: {}", dto.getUserId());
             throw new TransactionException("User is not existing");
         }
-
-        //TODO create in common feign error decoder https://stackoverflow.com/questions/55020389/spring-feign-client-exception-handling
 
         PocketDTO pocket = pocketServiceIF.getPocketById(dto.getPocketId()).getBody();
         if (pocket.getId() == null) {

@@ -24,14 +24,20 @@ public class TransactionController {
 
     private TransactionService transactionService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId) {
         return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TransactionDTO> getTransaction(@PathVariable UUID id) {
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+    @GetMapping
+    public ResponseEntity<TransactionDTO> getTransaction(@RequestParam UUID id) {
+        try {
+            TransactionDTO transaction = transactionService.getTransactionById(id);
+            return ResponseEntity.ok(transaction);
+        }catch (TransactionException ex){
+            log.debug(ex.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping
