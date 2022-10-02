@@ -39,4 +39,15 @@ public class PocketService {
         }
     }
 
+    public PocketDTO createPocket(PocketDTO pocketDTO) throws PocketException {
+        return null;
+    }
+
+    public PocketDTO modifyPocket(PocketDTO pocketDTO, String username) throws PocketException {
+        return null;
+    }
+
+    public void deletePocket(UUID id, String username) throws PocketException {
+    }
+
 }

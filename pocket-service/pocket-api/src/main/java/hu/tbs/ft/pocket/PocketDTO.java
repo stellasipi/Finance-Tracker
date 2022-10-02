@@ -5,17 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class PocketDTO {
+public class PocketDTO extends ModifyPocketDTO {
+
     private UUID id;
-    private String name;
+
+    @Pattern(regexp = "HUF|EUR|USD|GBP", message = "Currency is not from the allowed types")
     private String currency;
-    private List<UUID> userId;
+
     //private List<LimitDTO> limits;
     //private List<RepetitionDTO> repetitons;
 }

@@ -44,7 +44,7 @@ public class TransactionController {
     public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody TransactionDTO transactionDTO, UriComponentsBuilder uriComponentsBuilder) {
         try {
             TransactionDTO newTransactionDTO = transactionService.createTransaction(transactionDTO);
-            UriComponents uriComponents = uriComponentsBuilder.path("/user/{id}").buildAndExpand(newTransactionDTO.getId());
+            UriComponents uriComponents = uriComponentsBuilder.path("/transaction?id={id}").buildAndExpand(newTransactionDTO.getId());
             return ResponseEntity.created(uriComponents.toUri()).body(newTransactionDTO);
         } catch (TransactionException ex) {
             log.debug(ex.getMessage());
