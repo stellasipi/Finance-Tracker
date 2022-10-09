@@ -37,44 +37,45 @@ public class PocketController implements PocketServiceIF {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<PocketDTO>> getAllPocketsForUser(@RequestParam UUID userId) {
-        return ResponseEntity.ok(pocketService.getAllPocketsForUser(userId));
-    }
-
-    @PostMapping
-    public ResponseEntity<PocketDTO> createPocket(@RequestBody PocketDTO pocketDTO, UriComponentsBuilder uriComponentsBuilder) {
+    @GetMapping("/all")
+    public ResponseEntity<List<PocketDTO>> getAllPocketsForUser(JwtAuthenticationToken principal) {
         try {
-            PocketDTO newPocketDTO = pocketService.createPocket(pocketDTO);
-            UriComponents uriComponents = uriComponentsBuilder.path("/pocket/{id}").buildAndExpand(newPocketDTO.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(newPocketDTO);
-        } catch (PocketException ex) {
+            List<PocketDTO> pockets = pocketService.getAllPocketsForUser(principal.getName());
+            return ResponseEntity.ok(pockets);
+        }catch (PocketException ex){
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PocketDTO> modifyPocket(@PathVariable UUID id, @RequestBody PocketDTO pocketDTO, JwtAuthenticationToken principal) {
+    @PostMapping
+    public ResponseEntity<PocketDTO> createPocket(@RequestBody PocketDTO pocketDTO, UriComponentsBuilder uriComponentsBuilder, JwtAuthenticationToken principal) {
+        PocketDTO newPocketDTO = pocketService.createPocket(pocketDTO, principal.getName());
+        UriComponents uriComponents = uriComponentsBuilder.path("/pocket/{id}").buildAndExpand(newPocketDTO.getId());
+        return ResponseEntity.created(uriComponents.toUri()).body(newPocketDTO);
+    }
+
+    @PutMapping("/modify")
+    public ResponseEntity<PocketDTO> modifyPocket(@RequestParam UUID id, @RequestBody PocketDTO pocketDTO, JwtAuthenticationToken principal) {
         try {
-            PocketDTO modifiedPocket = pocketService.modifyPocket(pocketDTO, principal.getName());
+            PocketDTO modifiedPocket = pocketService.modifyPocket(id, pocketDTO, principal.getName());
             return ResponseEntity.ok(modifiedPocket);
         } catch (PocketException ex) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @PostMapping("/{id}/limit")
-    public ResponseEntity<PocketDTO> createPocketLimit(@PathVariable UUID id, @RequestBody LimitDTO limitDTO) {
+    @PostMapping("/limit")
+    public ResponseEntity<PocketDTO> createPocketLimit(@RequestParam UUID id, @RequestBody LimitDTO limitDTO) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
-    @DeleteMapping("/{id}/limit/{limitId}")
-    public ResponseEntity deletePocketLimit(@PathVariable UUID id, @PathVariable UUID limitId) {
+    @DeleteMapping("/limit/delete")
+    public ResponseEntity deletePocketLimit(@RequestParam UUID id, @RequestParam UUID limitId) {
         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deletePocket(@PathVariable UUID id, JwtAuthenticationToken principal) {
+    @DeleteMapping("/delete")
+    public ResponseEntity deletePocket(@RequestParam UUID id, JwtAuthenticationToken principal) {
         try {
             pocketService.deletePocket(id, principal.getName());
             return ResponseEntity.ok().build();
