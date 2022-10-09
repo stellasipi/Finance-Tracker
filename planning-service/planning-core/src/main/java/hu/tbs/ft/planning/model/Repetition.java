@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,4 +14,12 @@ import java.util.UUID;
 public class Repetition {
     @Id
     private UUID id = UUID.randomUUID();
+
+    private String name;
+
+    private LocalDateTime createdDate;
+
+    private String recurrence;
+
+    private String description;
 }
