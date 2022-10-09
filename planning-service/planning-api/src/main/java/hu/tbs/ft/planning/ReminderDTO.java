@@ -6,11 +6,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class ReminderDTO {
+public class ReminderDTO extends ModifyReminderDTO {
     private UUID id;
-    private String name;
+    private UUID userId;
     private LocalDateTime createdDate;
-    private LocalDateTime deadline;
-    private String description;
-    private RepetitionDTO repetition;
 }
