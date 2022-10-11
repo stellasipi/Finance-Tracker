@@ -5,6 +5,7 @@ export interface Transaction {
   paymentType: string;
   amount: number;
   name: string;
+  creatorUsername?: string;
   description?: string;
   createDate?: string;
 }

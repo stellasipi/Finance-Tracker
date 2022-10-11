@@ -12,5 +12,7 @@ public class TransactionDTO extends ModifyTransactionDTO {
 
     private UUID userId;
 
+    private String creatorUsername;
+
     private Date createDate;
 }

@@ -10,12 +10,15 @@ import hu.tbs.ft.transaction.repository.TransactionRepository;
 import hu.tbs.ft.transaction.util.PaymentType;
 import hu.tbs.ft.transaction.util.ProceedType;
 import hu.tbs.ft.transaction.util.TransactionException;
+import hu.tbs.ft.user.model.dto.DbUser;
 import hu.tbs.ft.user.model.dto.UserDTO;
 import hu.tbs.ft.user.model.dto.UserServiceIF;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.TransactionalException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -35,10 +38,17 @@ public class TransactionService {
 
     private PocketServiceIF pocketServiceIF;
 
-    public List<TransactionDTO> findAllByPocketId(UUID pocketId, String username) {
+    public List<TransactionDTO> findAllByPocketId(UUID pocketId, String username) throws TransactionException {
         log.debug("Get all transaction by pocket id {}", pocketId);
         UserDTO user = userServiceIF.findUserByUsername(username).getBody();
-        return transactionRepository.findByPocketIdAndUserId(pocketId, user.getId()).stream().map(transactionMapper::transactionToTransactionDTO).collect(Collectors.toList());
+        ResponseEntity<PocketDTO> pocketResponse = pocketServiceIF.getPocketById(pocketId);
+        if(pocketResponse.getStatusCode().isError()){
+            throw new TransactionException("Pocket not existing");
+        }
+        PocketDTO pocket = pocketResponse.getBody();
+        return transactionRepository.findByPocketId(pocketId).stream()
+                .map(transaction -> setCreatorUsername(transactionMapper.transactionToTransactionDTO(transaction), transaction.getUserId()))
+                .collect(Collectors.toList());
     }
 
     public TransactionDTO getTransactionById(UUID id, String username) throws TransactionException {
@@ -118,6 +128,14 @@ public class TransactionService {
         }
         transactionRepository.deleteById(transaction.get().getId());
         log.debug("Transaction has been deleted");
+    }
+
+    private TransactionDTO setCreatorUsername(TransactionDTO transaction, UUID userId){
+        ResponseEntity<UserDTO> userResponse = userServiceIF.findOneUser(userId);
+        if(!userResponse.getStatusCode().isError()){
+            transaction.setCreatorUsername(userResponse.getBody().getUsername());
+        }
+        return transaction;
     }
 
 }

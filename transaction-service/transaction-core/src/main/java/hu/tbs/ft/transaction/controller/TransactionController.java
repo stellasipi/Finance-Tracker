@@ -26,7 +26,13 @@ public class TransactionController {
 
     @GetMapping("/all")
     public ResponseEntity<List<TransactionDTO>> getAllTransactionsByPocketId(@RequestParam UUID pocketId, JwtAuthenticationToken principal) {
-        return ResponseEntity.ok(transactionService.findAllByPocketId(pocketId, principal.getName()));
+        try {
+            List<TransactionDTO> transactions = transactionService.findAllByPocketId(pocketId, principal.getName());
+            return ResponseEntity.ok(transactions);
+        }catch (TransactionException ex){
+            log.debug(ex.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
