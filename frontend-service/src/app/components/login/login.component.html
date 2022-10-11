@@ -1,6 +1,13 @@
 <div class="container">
-  <h1>Finance Tracker</h1>
-  <button type="button" class="btn btn-outline-secondary" (click)="login()" *ngIf="!loggedIn">Login</button>
-  <button type="button" class="btn btn-outline-secondary" (click)="logout()" *ngIf="loggedIn">Logout</button>
+  <div class="row">
+    <div class="col-sm">
+      <h1>Finance Tracker</h1>
+      <button type="button" class="btn btn-light" (click)="login()" *ngIf="!loggedIn">Login</button>
+    </div>
+    <div class="col-sm d-flex justify-content-end" *ngIf="loggedIn">
+      <button type="button" class="btn btn-light" (click)="logout()">Logout</button>
+      <button type="button" class="btn btn-light"  (click)="userInfo()"><i class="bi bi-person-circle"></i></button>
+    </div>
+  </div>
 </div>
 

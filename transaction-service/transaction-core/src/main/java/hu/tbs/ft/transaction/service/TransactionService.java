@@ -133,7 +133,7 @@ public class TransactionService {
     private TransactionDTO setCreatorUsername(TransactionDTO transaction, UUID userId){
         ResponseEntity<UserDTO> userResponse = userServiceIF.findOneUser(userId);
         if(!userResponse.getStatusCode().isError()){
-            transaction.setCreatorUsername(userResponse.getBody().getUsername());
+            transaction.setCreatorUsername(userResponse.getBody().getName());
         }
         return transaction;
     }
