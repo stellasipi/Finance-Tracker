@@ -14,6 +14,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {CookieService} from "ngx-cookie-service";
 import { PocketComponent } from './components/pocket/pocket.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
     RegisterComponent,
     HomeComponent,
     PocketComponent,
-    TransactionComponent
+    TransactionComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

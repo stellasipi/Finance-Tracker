@@ -1,3 +1,7 @@
 :host {
   background-color: white;
 }
+
+.font-style > * {
+  font-size: 14px;
+}
