@@ -28,21 +28,21 @@ export class RegisterComponent implements OnInit {
       password: this.password
     };
 
-    this.userService.registerUser(newUser).subscribe(
-      data => {
+    this.userService.registerUser(newUser).subscribe({
+      next: (data) => {
         this.snackBar.open('Registration succeeded', '', {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-primary']
         });
         this.resetRegisterForm();
       },
-      error => {
+      error: () => {
         this.snackBar.open('Registration failed', '', {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn']
         });
       }
-    );
+    });
   }
 
   resetRegisterForm() {

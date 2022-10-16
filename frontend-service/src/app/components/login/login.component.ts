@@ -24,10 +24,6 @@ export class LoginComponent  {
     this.cookieService.delete('JSESSIONID'); // TODO fix it
   }
 
-  userInfo(): void {
-    console.log("userInfo")
-  }
-
   get loggedIn() {
     return this.oauthService.hasValidAccessToken();
   }

@@ -16,7 +16,6 @@ export class TransactionComponent implements OnInit {
   transactions: Transaction[] | undefined;
 
   constructor(private oauthService: OAuthService, private transactionService: TransactionService) {
-
   }
 
   ngOnInit(): void {
@@ -31,14 +30,14 @@ export class TransactionComponent implements OnInit {
 
   getTransactions():void{
     let pocketId=this.pocket?(this.pocket.id?this.pocket.id:''):'';
-    this.transactionService.getAllTransactionsForPocket(pocketId).subscribe(
-      data=>{
+    this.transactionService.getAllTransactionsForPocket(pocketId).subscribe({
+      next: (data)=>{
         this.transactions=data;
       },
-      error => {
-        console.log('Error happend on transaction fetching');
+      error: () => {
+        console.log('Error happened when fetching transactions');
       }
-    );
+    });
   }
 
 }

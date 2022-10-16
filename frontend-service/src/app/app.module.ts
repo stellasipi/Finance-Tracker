@@ -15,6 +15,8 @@ import {CookieService} from "ngx-cookie-service";
 import { PocketComponent } from './components/pocket/pocket.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { UserComponent } from './components/user/user.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { UserComponent } from './components/user/user.component';
     OAuthModule.forRoot(),
     FormsModule,
     BrowserAnimationsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

@@ -32,14 +32,14 @@ export class PocketComponent implements OnInit {
 
   getPockets(): void {
     let userId = this.user?(this.user.id?this.user.id:''):'';
-    this.pocketService.getAllPocketsForUser(userId).subscribe(
-      data => {
+    this.pocketService.getAllPocketsForUser(userId).subscribe({
+      next: (data) => {
         this.pockets = data;
       },
-      error => {
-        console.log('Error happend on pockets fetching');
+      error: () => {
+        console.log('Error happened when fetching pockets');
       }
-    );
+    });
   }
 
   click(pocket: Pocket){
