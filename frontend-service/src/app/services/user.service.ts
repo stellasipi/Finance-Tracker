@@ -29,4 +29,12 @@ export class UserService {
   getLoggedInUser(): Observable<User> {
     return this.http.get<User>(userServiceUrl + this.path + '/info', this.authorizationHeader);
   }
+
+  modifyUser(user: User): Observable<User> {
+    return this.http.put<User>(userServiceUrl + this.path, user, this.authorizationHeader)
+  }
+
+  modifyPassword(user: Object): Observable<User> {
+    return this.http.put<User>(userServiceUrl + this.path + '/password', user, this.authorizationHeader)
+  }
 }

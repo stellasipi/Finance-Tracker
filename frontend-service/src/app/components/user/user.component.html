@@ -1,23 +1,42 @@
-<h1 mat-dialog-title>Info</h1>
-<div mat-dialog-content class="container">
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group mt-2 font-style">
-      <label class="ms-1">Name</label>
-    </div>
-    <div class="form-group mt-2 font-style">
-      <label class="ms-1">Username</label>
-    </div>
-    <div class="form-group mt-2 font-style">
-      <label class="ms-1">E-mail</label>
-    </div>
-    <div class="form-group mt-2 font-style">
-      <label class="ms-1">Role</label>
-    </div>
-    <div class="form-group mt-2 font-style">
-      <label class="ms-1">Change password</label>
-    </div>
-  </form>
+<div class="container col-xxl">
+  <h1 mat-dialog-title>Info</h1>
+  <div mat-dialog-content>
+    <form>
+      <div class="form-inl mt-2 font-style">
+        <label class="ms-1">Name</label>
+        <input type="text" class="form-control mt-1" id="name" name="name" [(ngModel)]="user.name" disabled="{{disabled.name}}">
+        <button type="button" class="btn btn-light" (click)="onEdit('name')" *ngIf="disabled.name"><i class="bi bi-pencil-fill"></i></button>
+        <button type="button" class="btn btn-light" (click)="onChange('name')" *ngIf="!disabled.name"><i class="bi bi-check2"></i></button>
+        <button type="button" class="btn btn-light" (click)="onDecline('name')" *ngIf="!disabled.name"><i class="bi bi-x"></i></button>
+      </div>
+      <div class="form-group mt-2 font-style">
+        <label class="ms-1">Username</label>
+        <input type="text" class="form-control mt-1" id="username" name="username" [(ngModel)]="user.username" disabled="{{disabled.username}}">
+        <button type="button" class="btn btn-light" (click)="onEdit('username')" *ngIf="disabled.username"><i class="bi bi-pencil-fill"></i></button>
+        <button type="button" class="btn btn-light" (click)="onChange('username')" *ngIf="!disabled.username"><i class="bi bi-check2"></i></button>
+        <button type="button" class="btn btn-light" (click)="onDecline('username')" *ngIf="!disabled.username"><i class="bi bi-x"></i></button>
+      </div>
+      <div class="form-group mt-2 font-style">
+        <label class="ms-1">E-mail</label>
+        <input type="email" class="form-control mt-1" id="email" name="email" [(ngModel)]="user.email" disabled="{{disabled.email}}">
+        <button type="button" class="btn btn-light" (click)="onEdit('email')" *ngIf="disabled.email"><i class="bi bi-pencil-fill"></i></button>
+        <button type="button" class="btn btn-light" (click)="onChange('email')" *ngIf="!disabled.email"><i class="bi bi-check2"></i></button>
+        <button type="button" class="btn btn-light" (click)="onDecline('email')" *ngIf="!disabled.email"><i class="bi bi-x"></i></button>
+      </div>
+      <div class="form-group mt-2 font-style">
+        <label class="ms-1">Role</label>
+        <input type="text" class="form-control mt-1" id="role" name="role" [(ngModel)]="user.role" disabled>
+      </div>
+      <div class="form-group mt-2 font-style">
+        <label class="ms-1">Change password</label>
+        <input type="password" class="form-control mt-1" id="password" name="password" [(ngModel)]="oldPassword" placeholder="Old password">
+        <input type="password" class="form-control mt-1" id="passwordAgain" name="passwordAgain" [(ngModel)]="newPassword" placeholder="New password">
+        <button type="button" class="btn btn-light" (click)="onChangePassword()" *ngIf="oldPassword && newPassword"><i class="bi bi-check2"></i></button>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+  </div>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-</div>
+
