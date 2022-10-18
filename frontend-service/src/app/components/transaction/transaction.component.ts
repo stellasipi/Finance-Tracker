@@ -3,6 +3,10 @@ import {Pocket} from "../../model/Pocket";
 import {Transaction} from "../../model/Transaction";
 import {OAuthService} from "angular-oauth2-oidc";
 import {TransactionService} from "../../services/transaction.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {TransactionEditComponent} from "./edit/transaction-edit.component";
+import {TransactionAddComponent} from "./add/transaction-add.component";
 
 @Component({
   selector: 'app-transaction',
@@ -13,9 +17,12 @@ export class TransactionComponent implements OnInit {
 
   @Input() pocket: Pocket | undefined;
 
+  public pocketName: string = '';
+
   transactions: Transaction[] | undefined;
 
-  constructor(private oauthService: OAuthService, private transactionService: TransactionService) {
+  constructor(private oauthService: OAuthService, private transactionService: TransactionService,
+              private snackBar: MatSnackBar, public transactionEditDialog: MatDialog, public transactionAddDialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -24,6 +31,7 @@ export class TransactionComponent implements OnInit {
 
   ngOnChanges(): void {
     if(this.pocket){
+      this.pocketName = this.pocket.name;
       this.getTransactions();
     }
   }
@@ -40,4 +48,30 @@ export class TransactionComponent implements OnInit {
     });
   }
 
+  public addTransaction(): void {
+    this.transactionAddDialog.open(TransactionAddComponent);
+  }
+
+  public editTransaction(transaction: Transaction): void {
+    this.transactionEditDialog.open(TransactionEditComponent, {
+      data: {
+        transaction: transaction
+      }
+    });
+  }
+
+  public deleteTransaction(transactionId: string): void {
+    this.transactionService.deleteTransaction(transactionId).subscribe({
+      next: () => {
+        this.snackBar.open('Transaction deleted', '', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-primary']
+        });
+        this.getTransactions();
+      },
+      error: () => {
+        console.log('Error happened when deleting transactions');
+      }
+    });
+  }
 }

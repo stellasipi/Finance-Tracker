@@ -17,6 +17,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { UserComponent } from './components/user/user.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
+import { TransactionEditComponent } from './components/transaction/edit/transaction-edit.component';
+import { TransactionAddComponent } from './components/transaction/add/transaction-add.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {MatButtonModule} from "@angular/material/button";
     HomeComponent,
     PocketComponent,
     TransactionComponent,
-    UserComponent
+    UserComponent,
+    TransactionEditComponent,
+    TransactionAddComponent
   ],
   imports: [
     BrowserModule,

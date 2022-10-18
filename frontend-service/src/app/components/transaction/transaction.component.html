@@ -1,5 +1,13 @@
 <div class="container my-3" *ngIf="transactions">
-  <h1>Transactions</h1>
+  <div class="row">
+    <div class="col-sm">
+      <h1 class="mb-0 pt-3">Transactions for {{pocketName}}</h1>
+    </div>
+    <div class="col-sm d-flex justify-content-end">
+      <button type="button" class="btn btn-light" (click)="addTransaction()"><i class="bi bi-plus-circle"></i></button>
+    </div>
+  </div>
+
   <table class="table table-striped">
     <thead>
     <tr>
@@ -10,6 +18,8 @@
       <th scope="col">Payment type</th>
       <th scope="col">Creator</th>
       <th scope="col">Date</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +31,8 @@
       <td>{{transaction.paymentType}}</td>
       <td>{{transaction.creatorUsername}}</td>
       <td>{{transaction.createDate}}</td>
+      <td><button type="button" class="btn btn-light buttonSize" (click)="editTransaction(transaction)"><i class="bi bi-pencil-fill"></i></button></td>
+      <td><button type="button" class="btn btn-outline-danger buttonSize" (click)="deleteTransaction(transaction.id)"><i class="bi bi-trash"></i></button></td>
     </tr>
     </tbody>
   </table>
