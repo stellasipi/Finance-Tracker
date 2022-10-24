@@ -27,6 +27,14 @@ export class TransactionService {
     return this.http.get<Transaction[]>(transactionServiceUrl + this.path + '/all?pocketId=' + pocketId, this.authorizationHeader);
   }
 
+  createTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(transactionServiceUrl + this.path, transaction, this.authorizationHeader);
+  }
+
+  modifyTransaction(id: string, transaction: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(transactionServiceUrl + this.path + '?transactionId=' + id, transaction, this.authorizationHeader);
+  }
+
   deleteTransaction(transactionId: string): Observable<any> {
     return this.http.delete(transactionServiceUrl + this.path + '/delete?id=' + transactionId, this.authorizationHeader);
   }

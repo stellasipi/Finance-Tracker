@@ -6,6 +6,7 @@ export interface Transaction {
   amount: number;
   name: string;
   creatorUsername?: string;
+  pocketId: string;
   description?: string;
   createDate?: string;
 }

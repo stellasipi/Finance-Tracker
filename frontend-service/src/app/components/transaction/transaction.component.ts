@@ -7,6 +7,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {TransactionEditComponent} from "./edit/transaction-edit.component";
 import {TransactionAddComponent} from "./add/transaction-add.component";
+import {User} from "../../model/User";
 
 @Component({
   selector: 'app-transaction',
@@ -16,6 +17,8 @@ import {TransactionAddComponent} from "./add/transaction-add.component";
 export class TransactionComponent implements OnInit {
 
   @Input() pocket: Pocket | undefined;
+
+  @Input() user: User | undefined;
 
   public pocketName: string = '';
 
@@ -49,7 +52,19 @@ export class TransactionComponent implements OnInit {
   }
 
   public addTransaction(): void {
-    this.transactionAddDialog.open(TransactionAddComponent);
+    this.transactionAddDialog.open(TransactionAddComponent, {
+      data: {
+        user: this.user,
+        pocket: this.pocket
+      }
+    });
+    this.transactionAddDialog.afterAllClosed.subscribe(() => {
+      this.snackBar.open('Transaction created', '', {
+        duration: 5000,
+        panelClass: ['mat-toolbar', 'mat-primary']
+      });
+      this.getTransactions();
+    });
   }
 
   public editTransaction(transaction: Transaction): void {
@@ -57,6 +72,13 @@ export class TransactionComponent implements OnInit {
       data: {
         transaction: transaction
       }
+    });
+    this.transactionAddDialog.afterAllClosed.subscribe(() => {
+      this.snackBar.open('Transaction modified', '', {
+        duration: 5000,
+        panelClass: ['mat-toolbar', 'mat-primary']
+      });
+      this.getTransactions();
     });
   }
 

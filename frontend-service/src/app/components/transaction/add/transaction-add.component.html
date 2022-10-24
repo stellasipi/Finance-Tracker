@@ -1,7 +1,36 @@
 <div class="container col-xxl">
   <h1 mat-dialog-title>Add new transaction</h1>
-  <div mat-dialog-content>This dialog showcases the title, close, content and actions elements.</div>
-  <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
-  </div>
+  <form mat-dialog-content (ngSubmit)="onSubmit()">
+    <div class="form-inl mt-2 font-style">
+      <label class="ms-1">Name</label>
+      <input type="text" class="form-control mt-1" id="name" name="name" [(ngModel)]="newTransaction.name">
+    </div>
+    <div class="form-group mt-2 font-style">
+      <label class="ms-1">Amount</label>
+      <input type="text" class="form-control mt-1" id="amount" name="amount" [(ngModel)]="newTransaction.amount">
+    </div>
+    <div class="form-group mt-2 font-style">
+      <label class="ms-1">Proceed type</label>
+      <select class="form-control mt-1" id="proceedType" name="proceedType" [(ngModel)]="newTransaction.proceedType">
+        <option value="EXPENDITURE">Expenditure</option>
+        <option value="INCOME">Income</option>
+      </select>
+    </div>
+    <div class="form-group mt-2 font-style">
+      <label class="ms-1">Payment type</label>
+      <select class="form-control mt-1" id="paymentType" name="paymentType" [(ngModel)]="newTransaction.paymentType">
+        <option value="CARD">Card</option>
+        <option value="CASH">Cash</option>
+      </select>
+    </div>
+    <div class="form-group mt-2 font-style">
+      <label class="ms-1">Description</label>
+      <input type="text" class="form-control mt-1" id="description" name="description" [(ngModel)]="newTransaction.description">
+    </div>
+    <div mat-dialog-actions>
+      <button type="submit" mat-button mat-dialog-close>Submit</button>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
 </div>
+
