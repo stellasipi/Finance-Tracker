@@ -8,8 +8,7 @@ import {transactionServiceUrl} from "../constans";
   providedIn: 'root'
 })
 export class TransactionService {
-  // private path = '/transaction-service/transaction';
-  private path = '/transaction';
+  private path = transactionServiceUrl + '/transaction';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 
@@ -24,18 +23,18 @@ export class TransactionService {
   }
 
   getAllTransactionsForPocket(pocketId: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(transactionServiceUrl + this.path + '/all?pocketId=' + pocketId, this.authorizationHeader);
+    return this.http.get<Transaction[]>(this.path + '/all?pocketId=' + pocketId, this.authorizationHeader);
   }
 
   createTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(transactionServiceUrl + this.path, transaction, this.authorizationHeader);
+    return this.http.post<Transaction>(this.path, transaction, this.authorizationHeader);
   }
 
   modifyTransaction(id: string, transaction: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(transactionServiceUrl + this.path + '?transactionId=' + id, transaction, this.authorizationHeader);
+    return this.http.put<Transaction>(this.path + '?transactionId=' + id, transaction, this.authorizationHeader);
   }
 
   deleteTransaction(transactionId: string): Observable<any> {
-    return this.http.delete(transactionServiceUrl + this.path + '/delete?id=' + transactionId, this.authorizationHeader);
+    return this.http.delete(this.path + '/delete?id=' + transactionId, this.authorizationHeader);
   }
 }

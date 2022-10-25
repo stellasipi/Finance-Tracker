@@ -2,14 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Pocket} from "../model/Pocket";
-import {fetchUrl, pocketServiceUrl} from "../constans";
+import {pocketServiceUrl} from "../constans";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PocketService {
-  //private path = '/pocket-service/pocket';
-  private path = '/pocket';
+  private path = pocketServiceUrl + '/pocket';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 
@@ -24,6 +23,6 @@ export class PocketService {
   }
 
   getAllPocketsForUser(userId: string): Observable<Pocket[]> {
-    return this.http.get<Pocket[]>(pocketServiceUrl + this.path + '/all', this.authorizationHeader);
+    return this.http.get<Pocket[]>(this.path + '/all', this.authorizationHeader);
   }
 }

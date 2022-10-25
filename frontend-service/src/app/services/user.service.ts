@@ -8,7 +8,7 @@ import {userServiceUrl} from "../constans";
   providedIn: 'root'
 })
 export class UserService {
-  private path = '/user';
+  private path = userServiceUrl + '/user';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 
@@ -23,18 +23,18 @@ export class UserService {
   }
 
   registerUser(user: User): Observable<User> {
-    return this.http.post<User>(userServiceUrl + this.path + '/register', user);
+    return this.http.post<User>(this.path + '/register', user);
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.http.get<User>(userServiceUrl + this.path + '/info', this.authorizationHeader);
+    return this.http.get<User>(this.path + '/info', this.authorizationHeader);
   }
 
   modifyUser(user: User): Observable<User> {
-    return this.http.put<User>(userServiceUrl + this.path, user, this.authorizationHeader)
+    return this.http.put<User>(this.path, user, this.authorizationHeader)
   }
 
   modifyPassword(user: Object): Observable<User> {
-    return this.http.put<User>(userServiceUrl + this.path + '/password', user, this.authorizationHeader)
+    return this.http.put<User>(this.path + '/password', user, this.authorizationHeader)
   }
 }
