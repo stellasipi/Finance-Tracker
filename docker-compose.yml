@@ -1,0 +1,110 @@
+version: "3.9"
+services:
+  config-server:
+    image: ft-config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod, native
+
+  api-gateway:
+    image: ft-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  auth-server:
+    ports:
+      - "9000:9000"
+    image: ft-auth-server
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  planning-service:
+    image: ft-planning-service
+    depends_on:
+      - config-server
+      - ft-planning-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  pocket-service:
+    image: ft-pocket-service
+    depends_on:
+      - config-server
+      - ft-pocket-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  report-service:
+    image: ft-report-service
+    depends_on:
+      - config-server
+      - ft-report-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  transaction-service:
+    image: ft-transaction-service
+    depends_on:
+      - config-server
+      - ft-transaction-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  user-service:
+    image: ft-user-service
+    depends_on:
+      - config-server
+      - ft-user-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  ft-planning-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=ft_planning_db
+      - POSTGRES_USER=ftdb_user
+      - POSTGRES_PASSWORD=ftdb_user
+
+  ft-pocket-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=ft_pocket_db
+      - POSTGRES_USER=ftdb_user
+      - POSTGRES_PASSWORD=ftdb_user
+
+  ft-report-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=ft_report_db
+      - POSTGRES_USER=ftdb_user
+      - POSTGRES_PASSWORD=ftdb_user
+
+  ft-transaction-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=ft_transaction_db
+      - POSTGRES_USER=ftdb_user
+      - POSTGRES_PASSWORD=ftdb_user
+
+  ft-user-db:
+    image: postgres:13
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    environment:
+      - POSTGRES_DB=ft_user_db
+      - POSTGRES_USER=ftdb_user
+      - POSTGRES_PASSWORD=ftdb_user

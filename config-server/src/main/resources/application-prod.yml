@@ -1,1 +1,13 @@
-#TODO
+# The ConfigServer's prod development configurations
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          addLabelLocations: false
+          search-locations:
+            - classpath:config/{application}/{profile}
+            - classpath:config
+
+server:
+  port: 8888

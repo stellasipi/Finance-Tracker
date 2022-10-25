@@ -140,7 +140,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.1.4</version>
+                <version>3.3.0</version>
                 <configuration>
                     <from>
                         <image>adoptopenjdk:11-jre</image> <!-- This is the base image for all our apps -->

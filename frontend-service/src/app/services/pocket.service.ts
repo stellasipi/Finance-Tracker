@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Pocket} from "../model/Pocket";
-import {pocketServiceUrl} from "../constans";
+import {pocketServiceUrl, pocketServiceUrlDocker} from "../constans";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PocketService {
-  private path = pocketServiceUrl + '/pocket';
+  private path = pocketServiceUrlDocker + '/pocket';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 

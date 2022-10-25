@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ft-pocket-db:5432/ft_pocket_db
+    driver-class-name: org.postgresql.Driver
+    username: ftdb_user
+    password: ftdb_user
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      org:
+        hibernate:
+          dialect: PostgreSQLDialect
+
+server:
+  port: 8080
+
+finance-tracker:
+  security:
+    client-secret: d0560d07-0480-4794-ae6c-c6061e391a53
+    client-id: pocket-service

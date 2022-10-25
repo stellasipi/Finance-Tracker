@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+//https://gist.github.com/aldobongio/6a22f49863c7a777612f7887bbb8fd1d
 @Configuration
 public class ZuulWorkaroundConfig {
 
@@ -34,36 +35,6 @@ public class ZuulWorkaroundConfig {
     public ZuulPostProcessor zuulPostProcessor(@Autowired RouteLocator routeLocator, @Autowired ZuulController zuulController,
                                                @Autowired(required = false) ErrorController errorController) {
         return new ZuulPostProcessor(routeLocator, zuulController, errorController);
-    }
-
-    private static enum LookupHandlerCallbackFilter implements CallbackFilter {
-
-        INSTANCE;
-
-        @Override
-        public int accept(Method method) {
-            if ("lookupHandler".equals(method.getName())) {
-                return 0;
-            }
-            return 1;
-        }
-
-    }
-
-    private static enum LookupHandlerMethodInterceptor implements MethodInterceptor {
-
-        INSTANCE;
-
-        @Override
-        public Object intercept(Object target, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-            if (ERROR_PATH.equals(args[0])) {
-
-                /* by entering this branch we avoid the ZuulHandlerMapping.lookupHandler method to trigger the NoSuchMethodError */
-                return null;
-            }
-            return methodProxy.invokeSuper(target, args);
-        }
-
     }
 
     private static final class ZuulPostProcessor implements BeanPostProcessor {
@@ -95,5 +66,34 @@ public class ZuulWorkaroundConfig {
 
     }
 
+    private static enum LookupHandlerCallbackFilter implements CallbackFilter {
+
+        INSTANCE;
+
+        @Override
+        public int accept(Method method) {
+            if ("lookupHandler".equals(method.getName())) {
+                return 0;
+            }
+            return 1;
+        }
+
+    }
+
+    private static enum LookupHandlerMethodInterceptor implements MethodInterceptor {
+
+        INSTANCE;
+
+        @Override
+        public Object intercept(Object target, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+            if (ERROR_PATH.equals(args[0])) {
+
+                /* by entering this branch we avoid the ZuulHandlerMapping.lookupHandler method to trigger the NoSuchMethodError */
+                return null;
+            }
+            return methodProxy.invokeSuper(target, args);
+        }
+
+    }
 }
 

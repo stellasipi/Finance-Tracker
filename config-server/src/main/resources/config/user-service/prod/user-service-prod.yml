@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ft-user-db:5432/ft_user_db
+    driver-class-name: org.postgresql.Driver
+    username: ftdb_user
+    password: ftdb_user
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      org:
+        hibernate:
+          dialect: PostgreSQLDialect
+
+server:
+  port: 8080
+
+finance-tracker:
+  security:
+    client-secret: c4319f86-0dbc-4915-b204-e6d4f21279b9
+    client-id: user-service

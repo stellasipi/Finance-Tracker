@@ -1,0 +1,26 @@
+adventure-capital:
+  auth-sever-url: http://localhost:9000/oauth2
+
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
+  routes:
+    user-service:
+      path: /user-service/**
+      url: http://user-service:8080
+    transaction-service:
+      path: /transaction-service/**
+      url: http://transaction-service:8080
+    report-service:
+      path: /report-service/**
+      url: http://report-service:8080
+    pocket-service:
+      path: /pocket-service/**
+      url: http://pocket-service:8080
+    planning-service:
+      path: /planning-service/**
+      url: http://planning-service:8080
+    oauth:
+      path: /oauth2/**
+      url: http://auth-sever:9000/oauth2
+  host:
+    socketTimeoutMillis: 600000

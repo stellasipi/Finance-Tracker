@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ft-report-db:5432/ft_report_db
+    driver-class-name: org.postgresql.Driver
+    username: ftdb_user
+    password: ftdb_user
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      org:
+        hibernate:
+          dialect: PostgreSQLDialect
+
+server:
+  port: 8080
+
+finance-tracker:
+  security:
+    client-secret: a2a51da0-20a1-4f47-8227-e48fd8657238
+    client-id: report-service

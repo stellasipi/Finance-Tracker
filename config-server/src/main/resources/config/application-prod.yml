@@ -1,1 +1,14 @@
-#TODO
+# Configuration applied to ALL applications using the prod profile
+finance-tracker:
+  auth-sever-url: http://localhost:9000/oauth2
+  user-service:
+    role:
+      user: USER
+      admin: ADMIN
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://auth-server:9000/oauth2/jwks
