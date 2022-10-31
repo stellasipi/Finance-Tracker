@@ -3,6 +3,9 @@ import {OAuthService} from "angular-oauth2-oidc";
 import {PocketService} from "../../services/pocket.service";
 import {User} from "../../model/User";
 import {Pocket} from "../../model/Pocket";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {PocketAddComponent} from "./add/pocket-add.component";
 
 @Component({
   selector: 'app-pocket',
@@ -17,7 +20,8 @@ export class PocketComponent implements OnInit {
 
   selectedPocket: Pocket | undefined;
 
-  constructor(private oauthService: OAuthService, private pocketService: PocketService) {
+  constructor(private oauthService: OAuthService, private pocketService: PocketService,private snackBar: MatSnackBar,
+              public pocketAddDialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -31,14 +35,24 @@ export class PocketComponent implements OnInit {
   }
 
   getPockets(): void {
-    let userId = this.user?(this.user.id?this.user.id:''):'';
-    this.pocketService.getAllPocketsForUser(userId).subscribe({
+    this.pocketService.getAllPocketsForUser().subscribe({
       next: (data) => {
         this.pockets = data;
       },
       error: () => {
         console.log('Error happened when fetching pockets');
       }
+    });
+  }
+
+  addPocket(): void{
+    this.pocketAddDialog.open(PocketAddComponent);
+    this.pocketAddDialog.afterAllClosed.subscribe(() => {
+      this.snackBar.open('Transaction created', '', {
+        duration: 5000,
+        panelClass: ['mat-toolbar', 'mat-primary']
+      });
+      this.getPockets();
     });
   }
 

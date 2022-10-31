@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Transaction} from "../model/Transaction";
-import {transactionServiceUrl, transactionServiceUrlDocker} from "../constans";
+import {transactionServiceUrl} from "../constans";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  private path = transactionServiceUrlDocker + '/transaction';
+  private path = transactionServiceUrl + '/transaction';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 

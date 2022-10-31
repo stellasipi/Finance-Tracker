@@ -1,0 +1,21 @@
+<div class="container col-xxl">
+  <h1 mat-dialog-title>Add new pocket</h1>
+  <form mat-dialog-content (ngSubmit)="onSubmit()">
+    <div class="form-inl mt-2 font-style">
+      <label class="ms-1">Name</label>
+      <input type="text" class="form-control mt-1" id="name" name="name" [(ngModel)]="newPocket.name">
+    </div>
+    <div class="form-group mt-2 font-style">
+      <label class="ms-1">Currency</label>
+      <select class="form-control mt-1" id="currency" name="currency" [(ngModel)]="newPocket.currency">
+        <option value="HUF">HUF</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      </select>
+    </div>
+    <div mat-dialog-actions>
+      <button type="submit" mat-button mat-dialog-close>Submit</button>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</div>

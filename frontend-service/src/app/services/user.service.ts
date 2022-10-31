@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {User} from "../model/User";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {userServiceUrl, userServiceUrlDocker} from "../constans";
+import {userServiceUrl} from "../constans";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private path = userServiceUrlDocker + '/user';
+  private path = userServiceUrl + '/user';
 
   private authorizationHeader: { headers: HttpHeaders; } | undefined;
 

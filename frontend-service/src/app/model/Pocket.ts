@@ -1,5 +1,5 @@
 export interface Pocket {
-  id: string;
+  id?: string;
   name: string;
   currency: string;
 }

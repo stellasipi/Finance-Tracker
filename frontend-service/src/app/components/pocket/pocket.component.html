@@ -1,5 +1,8 @@
 <div class="container overflow-hidden pb-2">
   <h1>My pockets</h1>
+  <div class="col-sm d-flex justify-content-end">
+    <button type="button" class="btn btn-light" (click)="addPocket()"><i class="bi bi-plus-circle"></i></button>
+  </div>
   <div class="row" >
     <div class="col-sm d-flex justify-content-evenly" *ngFor="let pocket of pockets">
       <button class="btn btn-light my-2" (click)="click(pocket)">

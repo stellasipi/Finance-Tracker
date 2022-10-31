@@ -19,6 +19,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import { TransactionEditComponent } from './components/transaction/edit/transaction-edit.component';
 import { TransactionAddComponent } from './components/transaction/add/transaction-add.component';
+import { PocketAddComponent } from './components/pocket/add/pocket-add.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TransactionAddComponent } from './components/transaction/add/transactio
     TransactionComponent,
     UserComponent,
     TransactionEditComponent,
-    TransactionAddComponent
+    TransactionAddComponent,
+    PocketAddComponent
   ],
   imports: [
     BrowserModule,
