@@ -26,6 +26,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - SERVICES_USERSERVICEURL=http://user-service:8080
+      - SERVICES_POCKETSERVICEURL=http://pocket-service:8080
 
   planning-service:
     image: ft-planning-service
