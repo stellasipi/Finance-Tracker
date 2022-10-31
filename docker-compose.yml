@@ -110,4 +110,3 @@ services:
       - POSTGRES_DB=ft_user_db
       - POSTGRES_USER=ftdb_user
       - POSTGRES_PASSWORD=ftdb_user
-  
