@@ -1,12 +1,14 @@
 package hu.tbs.ft.user.model.dto;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
+@SuperBuilder
 public class UserPasswordDTO {
     @NotEmpty(message = "Username can't be null or empty")
     @NotBlank(message = "Username can't be null or whitespaces")

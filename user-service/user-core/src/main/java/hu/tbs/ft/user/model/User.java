@@ -1,9 +1,6 @@
 package hu.tbs.ft.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "\"user\"")
 @AllArgsConstructor
 @NoArgsConstructor

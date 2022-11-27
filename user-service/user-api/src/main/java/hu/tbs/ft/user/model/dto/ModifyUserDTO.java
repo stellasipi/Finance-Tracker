@@ -1,6 +1,7 @@
 package hu.tbs.ft.user.model.dto;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
+@SuperBuilder
 public class ModifyUserDTO {
 
     @NotEmpty(message = "Name can't be null or empty")
