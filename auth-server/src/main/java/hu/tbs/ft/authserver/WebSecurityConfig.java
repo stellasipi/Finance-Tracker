@@ -26,7 +26,7 @@ public class WebSecurityConfig {
                 )
                 .logout()
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID") // TODO not working correctly
+                .deleteCookies("JSESSIONID")
                 .and()
                 .formLogin(withDefaults());
         return http.build();
