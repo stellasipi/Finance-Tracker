@@ -14,23 +14,11 @@ import org.springframework.context.annotation.Configuration;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-//https://gist.github.com/aldobongio/6a22f49863c7a777612f7887bbb8fd1d
 @Configuration
 public class ZuulWorkaroundConfig {
 
-    /**
-     * The path returned by ErrorContoller.getErrorPath() with Spring Boot < 2.5 (and no longer available on Spring Boot >= 2.5).
-     */
     private static final String ERROR_PATH = "/error";
 
-    /**
-     * Constructs a new bean post-processor for Zuul.
-     *
-     * @param routeLocator    the route locator.
-     * @param zuulController  the Zuul controller.
-     * @param errorController the error controller.
-     * @return the new bean post-processor.
-     */
     @Bean
     public ZuulPostProcessor zuulPostProcessor(@Autowired RouteLocator routeLocator, @Autowired ZuulController zuulController,
                                                @Autowired(required = false) ErrorController errorController) {
