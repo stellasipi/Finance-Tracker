@@ -1,4 +1,4 @@
-adventure-capital:
+finance-tracker:
   auth-sever-url: http://localhost:9000/oauth2
 
 zuul:
