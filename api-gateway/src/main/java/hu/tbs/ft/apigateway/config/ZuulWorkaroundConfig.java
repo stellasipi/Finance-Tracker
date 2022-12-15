@@ -44,7 +44,7 @@ public class ZuulWorkaroundConfig {
             if (hasErrorController && (bean instanceof ZuulHandlerMapping)) {
                 Enhancer enhancer = new Enhancer();
                 enhancer.setSuperclass(ZuulHandlerMapping.class);
-                enhancer.setCallbackFilter(LookupHandlerCallbackFilter.INSTANCE); // only for lookupHandler
+                enhancer.setCallbackFilter(LookupHandlerCallbackFilter.INSTANCE);
                 enhancer.setCallbacks(new Callback[]{LookupHandlerMethodInterceptor.INSTANCE, NoOp.INSTANCE});
                 Constructor<?> ctor = ZuulHandlerMapping.class.getConstructors()[0];
                 return enhancer.create(ctor.getParameterTypes(), new Object[]{routeLocator, zuulController});
